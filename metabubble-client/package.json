@@ -1,0 +1,41 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "devDependencies": {
+    "@element-plus/nuxt": "^1.0.6",
+    "@nuxt/devtools": "latest",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.2",
+    "autoprefixer": "^10.4.15",
+    "babel-eslint": "^10.1.0",
+    "daisyui": "^3.7.7",
+    "element-plus": "^2.3.14",
+    "eslint": "^8.52.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "nuxt": "^3.7.3",
+    "nuxt-icon": "^0.5.0",
+    "postcss": "^8.4.30",
+    "tailwindcss": "^3.3.3"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "@pinia/nuxt": "^0.4.11",
+    "@tailwindcss/typography": "^0.5.10",
+    "pinia": "^2.1.6",
+    "pinia-plugin-persistedstate": "^3.2.0"
+  }
+}
