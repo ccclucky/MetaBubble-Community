@@ -8,3 +8,12 @@ export const getListAPI = () => {
 export const PostAPI = (post: PostData) => {
   return httpRequest.post("/post/add", post);
 };
+
+export const LikeOrUnlikeAPI = (postId: number) => {
+  return httpRequest.post(`/post/like/${postId}`, postId);
+};
+
+export const CollectOrUnCollectAPI = (postId: number) => {
+  return httpRequest.post(`/post/collect/${postId}`, postId);
+};
+

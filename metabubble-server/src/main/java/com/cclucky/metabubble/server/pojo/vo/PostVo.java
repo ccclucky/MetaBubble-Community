@@ -17,6 +17,10 @@ public class PostVo {
     private String username;
     private String avatar;
     private String content;
+    private Integer likeCount;
+    private boolean isLike;
+    private Integer collectCount;
+    private boolean isCollect;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 }
