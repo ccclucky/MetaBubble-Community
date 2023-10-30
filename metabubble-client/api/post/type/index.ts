@@ -3,6 +3,10 @@ export interface PostVoData {
   username: string;
   avatar?: string;
   content: string;
+  likeCount: number;
+  collect: boolean;
+  commentCount: number;
+  like: boolean;
   createTime?: string;
 }
 

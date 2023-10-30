@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -60,10 +61,12 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
         // 创建返回vo
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(user, userVo);
+        List<String> roleNames = new ArrayList<>();
         userRoles.forEach(item -> {
             Role role = roleDao.findById(item.getRoleId()).orElse(new Role());
-            userVo.getRoleName().add(role.getRoleName());
+            roleNames.add(role.getRoleName());
         });
+        userVo.setRoleName(roleNames);
         return userVo;
     }
 
