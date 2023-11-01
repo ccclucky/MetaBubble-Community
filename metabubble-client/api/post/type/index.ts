@@ -1,5 +1,6 @@
 export interface PostVoData {
   id: number;
+  userId: number;
   username: string;
   avatar?: string;
   content: string;
