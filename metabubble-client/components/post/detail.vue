@@ -72,11 +72,12 @@
             <!-- 你的回复 -->
             <div class="flex border-b border-base-300">
                 <!-- 回复 -->
-                <PostComment class=" pb-2" />
+                <PostComment :postId="post.id" :replyUserId="post.userId" class=" pb-2" />
             </div>
             <!-- 评论信息 -->
-            <div class="flex">
+            <div class="flex flex-1 flex-col">
                 <PostCart />
+                <Comment v-for="item in commentList" :key="item.id" :comment="item" :postId="post.id" />
             </div>
         </div>
     </div>
@@ -84,6 +85,8 @@
 
 <script setup>
 import { usePostStoreHook } from '~/stores/post';
+import { useCommentStoreHook } from '~/stores/comment';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute();
 const post = JSON.parse(route.query.post); // 获取 postId 参数
@@ -114,6 +117,20 @@ const CollectAndUnCollect = () => {
     });
 }
 
+// 获取评论信息
+const useCommentStore = useCommentStoreHook()
+useCommentStore.getComments(post.id)
+
+const commentList  = ref([])
+const { comments } = storeToRefs(useCommentStore)
+
+
+watch(comments, () => {
+  // 在 comment 变化时执行操作
+  // 在这里执行更新 Comment 组件的操作，例如重新渲染或其他操作
+  commentList.value = comments.value
+});
+
 const postComment = ref(null);  // 修正此行，应该使用相同的引用名
 const router = useRouter()
 const flag = ref(false)
@@ -137,6 +154,5 @@ onMounted(() => {
             }
         })
     }
-
 });
 </script>
