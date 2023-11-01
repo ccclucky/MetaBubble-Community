@@ -1,7 +1,7 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.dto.RoleMenuDTO;
+import com.cclucky.metabubble.server.pojo.vo.RoleMenuVo;
 import com.cclucky.metabubble.server.pojo.entity.RoleMenu;
 import com.cclucky.metabubble.server.service.IRoleMenuService;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ public class RoleMenuController {
 
     @ApiOperation("为角色添加多个权限")
     @PostMapping("/rolePermit")
-    public Result<List<RoleMenu>> addList(@Valid @RequestBody RoleMenuDTO roleMenuDTO) {
-        return Result.success(roleMenuService.saveAll(roleMenuDTO), "添加成功");
+    public Result<List<RoleMenu>> addList(@Valid @RequestBody RoleMenuVo roleMenuVo) {
+        return Result.success(roleMenuService.saveAll(roleMenuVo), "添加成功");
     }
 }

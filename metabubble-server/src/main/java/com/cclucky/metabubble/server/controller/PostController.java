@@ -3,16 +3,14 @@ package com.cclucky.metabubble.server.controller;
 import com.cclucky.metabubble.server.common.result.Result;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.entity.Post;
-import com.cclucky.metabubble.server.pojo.vo.PostVo;
+import com.cclucky.metabubble.server.pojo.dto.PostDTO;
 import com.cclucky.metabubble.server.service.IPostService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 帖子管理
@@ -26,7 +24,7 @@ public class PostController {
 
     @GetMapping("/list")
     @ApiOperation("查询所有帖子相关信息")
-    public Result<List<PostVo>> list() {
+    public Result<List<PostDTO>> list() {
         LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Result.success(postService.findPostVoList(loginUser), "获取成功");
     }

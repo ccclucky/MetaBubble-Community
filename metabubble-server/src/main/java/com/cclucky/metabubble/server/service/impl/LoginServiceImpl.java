@@ -3,9 +3,8 @@ package com.cclucky.metabubble.server.service.impl;
 import com.cclucky.metabubble.server.common.result.Result;
 import com.cclucky.metabubble.server.common.utils.JwtUtil;
 import com.cclucky.metabubble.server.common.utils.RedisCache;
-import com.cclucky.metabubble.server.pojo.dto.LoginDTO;
+import com.cclucky.metabubble.server.pojo.vo.LoginVo;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
-import com.cclucky.metabubble.server.pojo.entity.User;
 import com.cclucky.metabubble.server.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,9 +25,9 @@ public class LoginServiceImpl implements LoginService {
     private RedisCache redisCache;
 
     @Override
-    public Result<Map<String, String>> login(LoginDTO loginDTO) {
+    public Result<Map<String, String>> login(LoginVo loginVo) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getSchoolId(),loginDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(loginVo.getSchoolId(), loginVo.getPassword());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         if(Objects.isNull(authenticate)){
             throw new RuntimeException("学号或密码错误");

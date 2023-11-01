@@ -2,7 +2,7 @@ package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
 import com.cclucky.metabubble.server.common.utils.RedisCache;
-import com.cclucky.metabubble.server.pojo.dto.LoginDTO;
+import com.cclucky.metabubble.server.pojo.vo.LoginVo;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.service.LoginService;
 import io.swagger.annotations.ApiOperation;
@@ -24,8 +24,8 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation("/用户登录")
-    public Result<Map<String, String>> login(@Valid @RequestBody LoginDTO loginDTO){
-        return loginService.login(loginDTO);
+    public Result<Map<String, String>> login(@Valid @RequestBody LoginVo loginVo){
+        return loginService.login(loginVo);
     }
 
     @RequestMapping("/user/logout")

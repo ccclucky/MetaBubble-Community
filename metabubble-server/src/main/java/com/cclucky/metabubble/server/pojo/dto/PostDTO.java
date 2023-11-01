@@ -7,19 +7,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
-    private String schoolId;
+public class PostDTO {
+    private Long id;
+    private Long userId;
     private String username;
-    private String email;
-    private String phone;
     private String avatar;
-    private List<String> roleName;
-    @JsonFormat(pattern = "yyyy-MM")
+    private String content;
+    private Integer likeCount;
+    private boolean isLike;
+    private Integer collectCount;
+    private boolean isCollect;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 }

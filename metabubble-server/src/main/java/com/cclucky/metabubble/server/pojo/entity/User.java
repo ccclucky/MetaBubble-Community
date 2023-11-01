@@ -32,7 +32,7 @@ public class User implements BaseEntity {
     @Column(name = "username",columnDefinition="varchar(20) COMMENT '用户姓名'")
     private String username;
 
-    @Column(name = "pssword",columnDefinition="varchar(255) not null COMMENT '密码'")
+    @Column(name = "password",columnDefinition="varchar(255) not null COMMENT '密码'")
     private String password;
 
     @Column(name = "email",columnDefinition="varchar(255) default null COMMENT '邮箱'")
@@ -47,7 +47,7 @@ public class User implements BaseEntity {
     private String avatar;
 
     @Column(name = "is_delete",columnDefinition="tinyint(1) default 0 COMMENT '逻辑删除字段 1 为删除'")
-    private Integer isDelete;
+    private Integer isDelete = 0;
 
     @Column(name = "create_time",columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp

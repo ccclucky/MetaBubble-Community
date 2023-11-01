@@ -1,12 +1,12 @@
 package com.cclucky.metabubble.server.service.impl;
 
 import com.cclucky.metabubble.server.common.utils.RedisCache;
-import com.cclucky.metabubble.server.pojo.dto.UserDTO;
+import com.cclucky.metabubble.server.pojo.vo.UserVo;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.entity.Role;
 import com.cclucky.metabubble.server.pojo.entity.User;
 import com.cclucky.metabubble.server.pojo.entity.UserRole;
-import com.cclucky.metabubble.server.pojo.vo.UserVo;
+import com.cclucky.metabubble.server.pojo.dto.UserDTO;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IRoleDao;
 import com.cclucky.metabubble.server.repository.IUserDao;
@@ -44,7 +44,7 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
 
     @Override
     @Transactional
-    public UserVo saveUser(UserDTO userDTO) {
+    public UserDTO saveUser(UserVo userDTO) {
         // 查询用户是否已存在
         if (!Objects.isNull(userDao.findBySchoolId(userDTO.getSchoolId()))) {
             // TODO: 2023/10/26 管理
@@ -59,7 +59,7 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
                 .map(item -> UserRole.builder().userId(user.getId()).roleId(item).build()).collect(Collectors.toList());
         List<UserRole> userRoles = userRoleDao.saveAll(collect);
         // 创建返回vo
-        UserVo userVo = new UserVo();
+        UserDTO userVo = new UserDTO();
         BeanUtils.copyProperties(user, userVo);
         List<String> roleNames = new ArrayList<>();
         userRoles.forEach(item -> {
@@ -71,15 +71,15 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
     }
 
     @Override
-    public UserVo getInfo(String schoolId) {
+    public UserDTO getInfo(String schoolId) {
         // 根据登录账号获取用户信息
         User user = userDao.findBySchoolId(schoolId);
         LoginUser userInfo = redisCache.getCacheObject("login:" + user.getId());
         // 创建userVO实例返回
-        UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(userInfo.getUser(), userVo);
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(userInfo.getUser(), userDTO);
         List<String> list = userInfo.getPermissions();
-        userVo.setRoleName(list);
-        return userVo;
+        userDTO.setRoleName(list);
+        return userDTO;
     }
 }
