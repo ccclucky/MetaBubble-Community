@@ -1,10 +1,10 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.dto.UserDTO;
-import com.cclucky.metabubble.server.pojo.entity.User;
 import com.cclucky.metabubble.server.pojo.vo.UserVo;
+import com.cclucky.metabubble.server.pojo.dto.UserDTO;
 import com.cclucky.metabubble.server.service.IUserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +21,14 @@ public class UserController {
     IUserService userService;
 
     @PostMapping("/add")
-    public Result<UserVo> add(@Valid @RequestBody UserDTO userDTO) {
-        return Result.success(userService.saveUser(userDTO), "添加成功");
+    @ApiOperation("添加用户")
+    public Result<UserDTO> add(@Valid @RequestBody UserVo userVo) {
+        return Result.success(userService.saveUser(userVo), "添加成功");
     }
 
     @GetMapping("/info")
-    public Result<UserVo> getInfo(Principal principal) {
+    @ApiOperation("获取登录用户信息")
+    public Result<UserDTO> getInfo(Principal principal) {
         String schoolId = principal.getName();
         return Result.success(userService.getInfo(schoolId), "查询成功");
     }

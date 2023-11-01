@@ -1,10 +1,10 @@
 package com.cclucky.metabubble.server.service;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.dto.LoginDTO;
+import com.cclucky.metabubble.server.pojo.vo.LoginVo;
 
 import java.util.Map;
 
 public interface LoginService {
-    Result<Map<String, String>> login(LoginDTO loginDTO);
+    Result<Map<String, String>> login(LoginVo loginVo);
 }

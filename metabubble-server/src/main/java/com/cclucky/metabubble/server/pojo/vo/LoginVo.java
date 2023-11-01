@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.dto;
+package com.cclucky.metabubble.server.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginDTO {
+public class LoginVo {
     private String schoolId;
     private String password;
 }

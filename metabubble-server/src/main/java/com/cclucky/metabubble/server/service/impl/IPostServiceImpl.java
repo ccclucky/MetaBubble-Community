@@ -6,7 +6,7 @@ import com.cclucky.metabubble.server.enums.PostActionEnum;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.entity.Post;
 import com.cclucky.metabubble.server.pojo.entity.User;
-import com.cclucky.metabubble.server.pojo.vo.PostVo;
+import com.cclucky.metabubble.server.pojo.dto.PostDTO;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IPostDao;
 import com.cclucky.metabubble.server.repository.IUserDao;
@@ -55,23 +55,24 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
     }
 
     @Override
-    public List<PostVo> findPostVoList(LoginUser loginUser) {
+    public List<PostDTO> findPostVoList(LoginUser loginUser) {
         return postDao.findAll(Sort.by("createTime").descending()).stream().map(item -> {
-            PostVo postVo = new PostVo();
-            BeanUtils.copyProperties(item, postVo);
+            PostDTO postDTO = new PostDTO();
+            BeanUtils.copyProperties(item, postDTO);
             User user = userDao.findById(item.getUserId()).orElse(new User());
-            postVo.setAvatar(user.getAvatar());
-            postVo.setUsername(user.getUsername());
+            postDTO.setUserId(user.getId());
+            postDTO.setAvatar(user.getAvatar());
+            postDTO.setUsername(user.getUsername());
             // 获取点赞状态和点赞数
             Set<Long> cacheSet = redisCache.getCacheSet(item.getId() + PostActionEnum.LIKE.getAction());
-            postVo.setLikeCount(cacheSet.size());
-            postVo.setLike(cacheSet.contains(loginUser.getUser().getId()));
+            postDTO.setLikeCount(cacheSet.size());
+            postDTO.setLike(cacheSet.contains(loginUser.getUser().getId()));
             // 获取收藏状态和收藏数
             cacheSet = redisCache.getCacheSet(item.getId() + PostActionEnum.COLLECT.getAction());
-            postVo.setCollectCount(cacheSet.size());
-            postVo.setCollect(cacheSet.contains(loginUser.getUser().getId()));
+            postDTO.setCollectCount(cacheSet.size());
+            postDTO.setCollect(cacheSet.contains(loginUser.getUser().getId()));
             // 获取评论状态和评论数
-            return postVo;
+            return postDTO;
         }).collect(Collectors.toList());
     }
 

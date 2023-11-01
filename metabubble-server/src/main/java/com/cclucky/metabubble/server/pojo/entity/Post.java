@@ -31,10 +31,10 @@ public class Post implements BaseEntity {
     private String content;
 
     @Column(name = "type",columnDefinition="tinyint(1) default 0 COMMENT '0 已发布 1 草稿'")
-    private Integer type;
+    private Integer type = 0;
 
     @Column(name = "is_delete",columnDefinition="tinyint(1) default 0 COMMENT '逻辑删除字段 1 为删除'")
-    private Integer isDelete;
+    private Integer isDelete = 0;
 
     @Column(name = "create_time",columnDefinition="timestamp DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp

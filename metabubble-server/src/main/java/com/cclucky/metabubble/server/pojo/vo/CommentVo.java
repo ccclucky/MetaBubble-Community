@@ -6,21 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserVo {
+public class CommentVo {
     @NotNull
-    private String schoolId;
-    private String username;
+    private Long postId;
+    private Long parentId;
     @NotNull
-    private String password;
-    private String email;
-    private String phone;
-    private String avatar;
+    private Long replyUserId;
     @NotNull
-    private List<Long> roleId;
+    private String content;
 }

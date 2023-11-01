@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.dto;
+package com.cclucky.metabubble.server.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoleMenuDTO {
+public class RoleMenuVo {
     @NotNull
     private Long roleId;
     @NotNull

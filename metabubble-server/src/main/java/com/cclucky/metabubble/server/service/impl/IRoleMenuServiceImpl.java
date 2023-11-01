@@ -1,6 +1,6 @@
 package com.cclucky.metabubble.server.service.impl;
 
-import com.cclucky.metabubble.server.pojo.dto.RoleMenuDTO;
+import com.cclucky.metabubble.server.pojo.vo.RoleMenuVo;
 import com.cclucky.metabubble.server.pojo.entity.Menu;
 import com.cclucky.metabubble.server.pojo.entity.Role;
 import com.cclucky.metabubble.server.pojo.entity.RoleMenu;
@@ -8,17 +8,14 @@ import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IMenuDao;
 import com.cclucky.metabubble.server.repository.IRoleDao;
 import com.cclucky.metabubble.server.repository.IRoleMenuDao;
-import com.cclucky.metabubble.server.service.IMenuService;
 import com.cclucky.metabubble.server.service.IRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,15 +41,15 @@ public class IRoleMenuServiceImpl  extends BaseServiceImpl<RoleMenu, Long> imple
 
     /**
      *
-     * @param roleMenuDTO 角色和多个权限信息
+     * @param roleMenuVo 角色和多个权限信息
      * @return List<RoleMenu>
      */
     @Override
     @Transactional
-    public List<RoleMenu> saveAll(RoleMenuDTO roleMenuDTO) {
+    public List<RoleMenu> saveAll(RoleMenuVo roleMenuVo) {
         // 创建RoleMenu对象
-        List<RoleMenu> collect = roleMenuDTO.getMenuIds().stream()
-                .map(item -> RoleMenu.builder().roleId(roleMenuDTO.getRoleId()).menuId(item).build())
+        List<RoleMenu> collect = roleMenuVo.getMenuIds().stream()
+                .map(item -> RoleMenu.builder().roleId(roleMenuVo.getRoleId()).menuId(item).build())
                 .collect(Collectors.toList());
         // 查询已存在的RoleMenu对象并从数据消除
         List<RoleMenu> list = collect.stream().filter(item -> {
