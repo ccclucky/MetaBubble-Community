@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface ICommentDao extends IBaseDao<Comment, Long> {
     List<Comment> findAllByPostIdOrderByCreateTimeDesc(Long postId);
+
+    List<Comment> findCommentsByPostId(Long postId);
 }

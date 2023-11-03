@@ -12,3 +12,7 @@ export const addCommentAPI = (comment: CreateCommentData) => {
 export const addReplyAPI = (reply: CreateCommentData) => {
   return httpRequest.post("/comment/reply", reply);
 };
+
+export const likeAPI = (commentId: number) => {
+  return httpRequest.post(`/comment/like/${commentId}`, commentId);
+};

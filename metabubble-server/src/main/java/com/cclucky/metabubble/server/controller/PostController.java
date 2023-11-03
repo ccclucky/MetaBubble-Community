@@ -29,6 +29,17 @@ public class PostController {
         return Result.success(postService.findPostVoList(loginUser), "获取成功");
     }
 
+    /**
+     * 暂时废弃，没用到
+     * @param id 帖子id
+     * @return Result<PostDTO>
+     */
+    @GetMapping("/list/{id}")
+    @ApiOperation("查询所有帖子相关信息")
+    public Result<PostDTO> listById(@PathVariable("id") Long id) {
+        return Result.success(postService.findPostVoListById(id), "获取成功");
+    }
+
     @PostMapping("/add")
     @ApiOperation("发帖")
     public Result<Post> add(@RequestBody Post post) {

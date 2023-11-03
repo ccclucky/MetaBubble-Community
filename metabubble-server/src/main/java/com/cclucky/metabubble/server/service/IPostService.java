@@ -17,4 +17,6 @@ public interface IPostService extends IBaseService<Post, Long> {
     List<String> likeOrUnlike(Long postId, LoginUser loginUser);
 
     List<String> collectOrUnCollect(Long postId, LoginUser loginUser);
+
+    PostDTO findPostVoListById(Long id);
 }

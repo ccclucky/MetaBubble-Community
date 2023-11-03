@@ -39,7 +39,7 @@
                     <Icon v-if="false" name="majesticons:comment-2" class="w-5 h-5" />
                     <Icon v-else name="majesticons:comment-2-line" class="w-5 h-5" />
                 </div>
-                <p class="px-2">231</p>
+                <p class="px-2">{{ commentCount }}</p>
             </div>
             <div class="flex flex-1 justify-end items-center cursor-pointer">
                 <div @click="CollectAndUnCollect"
@@ -54,6 +54,8 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia';
+import store from '~/stores';
 import { usePostStoreHook } from '~/stores/post';
 
 const props = defineProps(['foo'])
@@ -96,4 +98,12 @@ const CollectAndUnCollect = async () => {
 
     });
 }
+
+// 获取评论数量
+const { postList } = storeToRefs(usePostStore)
+const commentCount = ref(postList.value.find(item => item.id === post.id).commentCount)
+watch(postList, () => {
+    commentCount.value = postList.value.find(item => item.id === post.id).commentCount
+})
+ 
 </script>

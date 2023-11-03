@@ -1,4 +1,4 @@
-import { addCommentAPI, addReplyAPI, getCommentsAPI } from './../../api/comment/index';
+import { addCommentAPI, addReplyAPI, getCommentsAPI, likeAPI } from './../../api/comment/index';
 import store from "@/stores";
 import { defineStore } from "pinia";
 import type { CommentData, CreateCommentData } from '~/api/comment/type';
@@ -21,11 +21,16 @@ export const useCommentStore = defineStore("comment", () => {
         await getComments(reply.postId)
     }
 
+    const likeOrUnlike = async (commentId: number) => {
+        await likeAPI(commentId)
+    }
+
     return {
         comments,
         getComments,
         addComment,
-        addReply
+        addReply,
+        likeOrUnlike
     }
 });
 

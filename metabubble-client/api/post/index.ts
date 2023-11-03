@@ -5,6 +5,10 @@ export const getListAPI = () => {
   return httpRequest.get("/post/list");
 };
 
+export const PostInfoAPI = (postId: number) => {
+  return httpRequest.get(`/post/list/${postId}`);
+};
+
 export const PostAPI = (post: PostData) => {
   return httpRequest.post("/post/add", post);
 };
