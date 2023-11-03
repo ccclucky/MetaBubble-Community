@@ -39,4 +39,11 @@ public class CommentController {
     public Result<List<CommentDTO>> getComments(@PathVariable("postId") Long postId) {
         return Result.success(commentService.getCommentsByPostId(postId), "成功获取评论");
     }
+
+    @PostMapping("/like/{id}")
+    @ApiOperation("点赞")
+    public Result<Long> like(@PathVariable("id") Long commentId) {
+        List<String> res = commentService.likeOrUnlike(commentId);
+        return Result.success(Long.parseLong(res.get(0)), res.get(1));
+    }
 }

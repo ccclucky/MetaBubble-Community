@@ -1,14 +1,14 @@
-export interface PostVoData {
+export interface PostDTOData {
   id: number;
   userId: number;
   username: string;
-  avatar?: string;
+  avatar: string;
   content: string;
   likeCount: number;
   collect: boolean;
   commentCount: number;
   like: boolean;
-  createTime?: string;
+  createTime: string;
 }
 
 export interface PostData {

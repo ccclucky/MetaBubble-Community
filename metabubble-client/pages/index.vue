@@ -5,7 +5,6 @@ import { storeToRefs } from "pinia";
 const usePostStore = usePostStoreHook()
 usePostStore.getList()
 const { postList } = storeToRefs(usePostStore)
-
 </script>
 
 <!-- 广场首页 -->

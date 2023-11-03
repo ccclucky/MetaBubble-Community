@@ -24,7 +24,7 @@
 
         <!-- 时间、点赞、收藏、评论信息 -->
         <div class="flex flex-1 flex-row px-20 pt-2 h-full">
-            <div class="flex flex-1 justify-start items-center cursor-pointer">
+            <div class="flex flex-1 justify-start items-center">
                 <p class="px-2">时间 · {{ reply.createTime }}</p>
             </div>
             <div class="flex flex-1 justify-center items-center cursor-pointer">
@@ -32,14 +32,13 @@
                     <Icon v-if="false" name="majesticons:comment-2" class="w-5 h-5" />
                     <Icon v-else name="majesticons:comment-2-line" class="w-5 h-5" />
                 </div>
-                <p class="px-2">231</p>
             </div>
             <div class="flex flex-1 justify-start items-center cursor-pointer">
                 <div @click="likeAndUnlike" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
                     <Icon v-if="like" name="icon-park-solid:like" class="w-5 h-5" />
                     <Icon v-else name="icon-park-outline:like" class="w-5 h-5" />
                 </div>
-                <p class="px-2">100</p>
+                <p class="px-2">{{ likeCount }}</p>
             </div>
         </div>
     </div>
@@ -58,10 +57,27 @@
 </template>
 
 <script setup>
+import { useCommentStoreHook } from '~/stores/comment';
+
 const props = defineProps(['reply', "postId", 'parentId'])
 const { reply, postId, parentId } = toRefs(props)
 const replyDialog = ref('replyDialog')
 const handleComment = () => {
     replyDialog.value.showModal()
+}
+
+// 点赞该评论
+// 判断是否点赞
+const useCommentStore = useCommentStoreHook()
+const like = ref(reply.value.like)
+const likeCount = ref(reply.value.likeCount)
+const likeAndUnlike = () => {
+    useCommentStore.likeOrUnlike(reply.value.id).then((res) => {
+        like.value = !like.value
+        likeCount.value = like.value ? ++likeCount.value : --likeCount.value
+        usePostStore.getList()
+    }).catch((err) => {
+
+    });
 }
 </script>

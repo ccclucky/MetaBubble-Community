@@ -4,6 +4,8 @@ export interface CommentData {
   username: string;
   avatar: string;
   createTime: string;
+  like: boolean;
+  likeCount: number;
   replies: ReplyData[];
 }
 
@@ -14,6 +16,8 @@ export interface ReplyData {
   replyUsername: string;
   avatar: string;
   createTime: string;
+  like: boolean;
+  likeCount: number;
 }
 
 export interface CreateCommentData {

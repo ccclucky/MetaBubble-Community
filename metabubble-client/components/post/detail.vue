@@ -50,7 +50,7 @@
                             <Icon v-else name="majesticons:comment-2" class="w-5 h-5" />
                         </button>
                     </div>
-                    <p class="px-2">231</p>
+                    <p class="px-2">{{ commentList.length }}</p>
                 </div>
                 <div class="flex flex-1 justify-end items-center">
                     <div class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
@@ -62,8 +62,6 @@
                     <p class="px-2">{{ collectCount }}</p>
                 </div>
             </div>
-
-
         </div>
 
         <!-- footer -->
@@ -92,6 +90,7 @@ const route = useRoute();
 const post = JSON.parse(route.query.post); // 获取 postId 参数
 
 const usePostStore = usePostStoreHook()
+
 const like = ref(post.like)
 const likeCount = ref(post.likeCount)
 const likeAndUnlike = () => {
@@ -123,7 +122,6 @@ useCommentStore.getComments(post.id)
 
 const commentList  = ref([])
 const { comments } = storeToRefs(useCommentStore)
-
 
 watch(comments, () => {
   // 在 comment 变化时执行操作

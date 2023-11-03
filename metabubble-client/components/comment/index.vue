@@ -25,22 +25,22 @@
 
         <!-- 时间、点赞、收藏、评论信息 -->
         <div class="flex flex-1 flex-row px-20 pt-2 h-full">
-            <div class="flex flex-1 justify-start items-center cursor-pointer">
-                <p class="px-2">时间 · {{ comment.createTime }}</p>
+            <div class="flex flex-1 justify-start items-center">
+                <p class="px-2">时间·{{ comment.createTime }}</p>
             </div>
             <div class="flex flex-1 justify-center items-center cursor-pointer">
                 <div @click="handleReply" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
                     <Icon v-if="false" name="majesticons:comment-2" class="w-5 h-5" />
                     <Icon v-else name="majesticons:comment-2-line" class="w-5 h-5" />
                 </div>
-                <p class="px-2">231</p>
+                <p class="px-2">{{ replies.length }}</p>
             </div>
             <div class="flex flex-1 justify-start items-center cursor-pointer">
                 <div @click="likeAndUnlike" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
                     <Icon v-if="like" name="icon-park-solid:like" class="w-5 h-5" />
                     <Icon v-else name="icon-park-outline:like" class="w-5 h-5" />
                 </div>
-                <p class="px-2">100</p>
+                <p class="px-2">{{ likeCount }}</p>
             </div>
         </div>
 
@@ -53,11 +53,24 @@
             <CommentReply v-for="item in replies" :key="item" :reply="item" :postId="postId" :parentId="comment.id" />
         </div>
     </div>
+
+    <dialog ref="replyDialog" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg text-center">回复</h3>
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="resetForm">✕</button>
+            </form>
+            <div>
+                <PostComment :post-id="postId" :replyUserId="comment.userId" :parent-id="comment.id" />
+            </div>
+        </div>
+    </dialog>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { useCommentStoreHook } from '~/stores/comment';
 
+const useCommentStore = useCommentStoreHook()
 const props = defineProps(['comment', 'postId'])
 
 const { comment, postId } = toRefs(props);
@@ -72,18 +85,29 @@ const allReplyHandle = () => {
 }
 
 // 回复评论
-const useCommentStore = useCommentStoreHook()
-watch(comment!, () => {
+watch(comment, () => {
   replies.value = comment?.value.replies
 });
 
+// 回复评论的dialog
+const replyDialog = ref("replyDialog")
+
 const handleReply = () => {
-    useCommentStore.addReply({
-        postId: postId?.value,
-        parentId: comment?.value.id,
-        replyUserId: comment?.value.userId,
-        content: "string"
-    })
+    replyDialog.value.showModal()
+}
+
+// 点赞该评论
+// 判断是否点赞
+const like = ref(comment.value.like)
+const likeCount = ref(comment.value.likeCount)
+const likeAndUnlike = () => {
+    useCommentStore.likeOrUnlike(comment.value.id).then((res) => {
+        like.value = !like.value
+        likeCount.value = like.value ? ++likeCount.value : --likeCount.value
+        usePostStore.getList()
+    }).catch((err) => {
+
+    });
 }
 
 </script>

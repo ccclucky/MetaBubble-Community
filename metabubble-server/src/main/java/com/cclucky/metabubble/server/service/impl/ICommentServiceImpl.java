@@ -1,6 +1,9 @@
 package com.cclucky.metabubble.server.service.impl;
 
 import com.cclucky.metabubble.server.common.result.Result;
+import com.cclucky.metabubble.server.common.utils.RedisCache;
+import com.cclucky.metabubble.server.enums.CommentEventEnum;
+import com.cclucky.metabubble.server.enums.PostActionEnum;
 import com.cclucky.metabubble.server.pojo.dto.CommentDTO;
 import com.cclucky.metabubble.server.pojo.entity.Post;
 import com.cclucky.metabubble.server.pojo.entity.User;
@@ -17,10 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.annotation.Resource;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +40,9 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
     @Autowired
     private IPostDao postDao;
 
+    @Resource
+    private RedisCache redisCache;
+
     @Override
     public IBaseDao<Comment, Long> getBaseDao() {
         return this.commentDao;
@@ -45,6 +51,7 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
     @Override
     public List<CommentDTO> getCommentsByPostId(Long postId) {
         List<Comment> all = commentDao.findAllByPostIdOrderByCreateTimeDesc(postId);
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // 获取所有父评论并转成DTO存进 commentDTOS
         List<CommentDTO> parentComments = all.stream()
                 .filter(item -> Objects.isNull(item.getParentId()) && item.getType().equals(0))
@@ -59,6 +66,10 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
                     // 获取reply_user
                     String replyUsername = userDao.findById(item.getReplyUserId()).orElse(new User()).getUsername();
                     commentDTO.setReplyUsername(replyUsername);
+                    // 获取点赞状态和点赞数
+                    Set<Long> cacheSet = redisCache.getCacheSet(item.getId() + CommentEventEnum.LIKE.getAction());
+                    commentDTO.setLikeCount(cacheSet.size());
+                    commentDTO.setLike(cacheSet.contains(loginUser.getUser().getId()));
                     return commentDTO;
                 })
                 .collect(Collectors.toList());
@@ -81,6 +92,10 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
                         // 获取reply_user
                         String replyUsername = userDao.findById(childrenComment.getReplyUserId()).orElse(new User()).getUsername();
                         reply.setReplyUsername(replyUsername);
+                        // 获取点赞状态和点赞数
+                        Set<Long> cacheSet = redisCache.getCacheSet(childrenComment.getId() + CommentEventEnum.LIKE.getAction());
+                        reply.setLikeCount(cacheSet.size());
+                        reply.setLike(cacheSet.contains(loginUser.getUser().getId()));
                         return reply;
                     }).collect(Collectors.toList());
             parentComment.setReplies(replyDTOList);
@@ -120,5 +135,30 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
         reply.setReplyUserId(userId);
         commentDao.save(reply);
         return reply;
+    }
+
+    @Override
+    public List<String> likeOrUnlike(Long commentId) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String key = commentId + "-" + CommentEventEnum.LIKE.getAction();
+        // 获取当前文章情况 key 为帖子id value为set，set的value为userid
+        Set<Long> cacheSet = redisCache.getCacheSet(key);
+        HashSet<Long> hashSet = new HashSet<>();
+        Set<Long> commentSet = CollectionUtils.isEmpty(cacheSet) ? hashSet : cacheSet;
+        // 判断是否有过
+        List<String> res = new ArrayList<>();
+        Long userId = loginUser.getUser().getId();
+        if (!commentSet.contains(userId)) {
+            commentSet.add(userId);
+            res.add(String.valueOf(commentSet.size()));
+            res.add(CommentEventEnum.LIKE.getDesc() + "成功");
+        } else {
+            commentSet.remove(userId);
+            res.add(String.valueOf(commentSet.size()));
+            res.add("已取消" + CommentEventEnum.LIKE.getDesc());
+        }
+        redisCache.deleteObject(key);
+        redisCache.setCacheSet(key, commentSet);
+        return res;
     }
 }

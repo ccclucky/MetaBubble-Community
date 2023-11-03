@@ -1,6 +1,7 @@
 package com.cclucky.metabubble.server.service;
 
 import com.cclucky.metabubble.server.pojo.dto.CommentDTO;
+import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.vo.CommentVo;
 import com.cclucky.metabubble.server.pojo.entity.Comment;
 
@@ -12,4 +13,6 @@ public interface ICommentService extends IBaseService<Comment, Long> {
     Comment toSave(CommentVo commentVo);
 
     Comment reply(CommentVo commentVo);
+
+    List<String> likeOrUnlike(Long commentId);
 }

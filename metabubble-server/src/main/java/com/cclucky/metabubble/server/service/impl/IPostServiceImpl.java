@@ -8,17 +8,19 @@ import com.cclucky.metabubble.server.pojo.entity.Post;
 import com.cclucky.metabubble.server.pojo.entity.User;
 import com.cclucky.metabubble.server.pojo.dto.PostDTO;
 import com.cclucky.metabubble.server.repository.IBaseDao;
+import com.cclucky.metabubble.server.repository.ICommentDao;
 import com.cclucky.metabubble.server.repository.IPostDao;
 import com.cclucky.metabubble.server.repository.IUserDao;
 import com.cclucky.metabubble.server.service.IPostService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,10 +34,10 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
 
     @Autowired
     private IUserDao userDao;
+    @Resource
+    private RedisCache redisCache;
     @Autowired
-    RedisCache redisCache;
-    @Autowired
-    RedisTemplate redisTemplate;
+    private ICommentDao commentDao;
 
     @Override
     public IBaseDao<Post, Long> getBaseDao() {
@@ -72,8 +74,36 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
             postDTO.setCollectCount(cacheSet.size());
             postDTO.setCollect(cacheSet.contains(loginUser.getUser().getId()));
             // 获取评论状态和评论数
+            int size = (int) commentDao.findCommentsByPostId(item.getId()).stream()
+                    .filter(comment -> Objects.isNull(comment.getParentId())).count();
+            postDTO.setCommentCount(size);
             return postDTO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDTO findPostVoListById(Long id) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = postDao.findById(id).orElse(new Post());
+        User user = loginUser.getUser();
+        PostDTO postDTO = new PostDTO();
+        BeanUtils.copyProperties(post, postDTO);
+        postDTO.setUserId(user.getId());
+        postDTO.setUsername(user.getUsername());
+        postDTO.setAvatar(user.getAvatar());
+        // 获取点赞状态和点赞数
+        Set<Long> cacheSet = redisCache.getCacheSet(id + PostActionEnum.LIKE.getAction());
+        postDTO.setLikeCount(cacheSet.size());
+        postDTO.setLike(cacheSet.contains(user.getId()));
+        // 获取收藏状态和收藏数
+        cacheSet = redisCache.getCacheSet(id + PostActionEnum.COLLECT.getAction());
+        postDTO.setCollectCount(cacheSet.size());
+        postDTO.setCollect(cacheSet.contains(user.getId()));
+        // 获取评论状态和评论数
+        int size = (int) commentDao.findCommentsByPostId(id).stream()
+                .filter(comment -> Objects.isNull(comment.getParentId())).count();
+        postDTO.setCommentCount(size);
+        return postDTO;
     }
 
     @Override

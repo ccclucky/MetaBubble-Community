@@ -34,6 +34,7 @@
 import { ref } from 'vue';
 import { useCommentStoreHook } from '~/stores/comment';
 import { useUserStoreHook } from '~/stores/user';
+import { usePostStoreHook } from "~/stores/post";
 const text = ref('');
 const style = ref({
     background: 'transparent',
@@ -56,9 +57,9 @@ const parentId = props.parentId
 
 const useUserStore = useUserStoreHook()
 const useCommentStore = useCommentStoreHook()
+const usePostStore = usePostStoreHook()
 const commentHandle = () => {
     if (parentId) {
-        console.log("parentId", parentId);
         useCommentStore.addReply({
             postId: postId,
             parentId: parentId,
@@ -66,7 +67,6 @@ const commentHandle = () => {
             content: text.value
         })
     } else {
-        console.log("replyUserId", replyUserId);
         useCommentStore.addComment({
             postId: postId,
             replyUserId: replyUserId,

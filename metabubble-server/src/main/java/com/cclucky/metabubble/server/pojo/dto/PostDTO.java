@@ -22,6 +22,7 @@ public class PostDTO {
     private boolean isLike;
     private Integer collectCount;
     private boolean isCollect;
+    private Integer commentCount;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 }

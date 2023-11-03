@@ -20,6 +20,8 @@ public class CommentDTO {
     private String replyUsername;
     private String avatar;
     private String content;
+    private Integer likeCount;
+    private boolean isLike;
     @JsonFormat(pattern = "MM-dd HH:mm")
     private Date createTime;
     private List<CommentDTO> replies;
