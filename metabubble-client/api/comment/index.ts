@@ -13,6 +13,10 @@ export const addReplyAPI = (reply: CreateCommentData) => {
   return httpRequest.post("/comment/reply", reply);
 };
 
+export const RepliesAPI = () => {
+  return httpRequest.get("/comment/allReply");
+};
+
 export const likeAPI = (commentId: number) => {
   return httpRequest.post(`/comment/like/${commentId}`, commentId);
 };

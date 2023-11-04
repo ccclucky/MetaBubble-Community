@@ -9,6 +9,18 @@ export const PostInfoAPI = (postId: number) => {
   return httpRequest.get(`/post/list/${postId}`);
 };
 
+export const CollectPostAPI = () => {
+  return httpRequest.get(`/post/allCollect`);
+};
+
+export const LikePostAPI = () => {
+  return httpRequest.get(`/post/allLike`);
+};
+
+export const AllPostAPI = () => {
+  return httpRequest.get(`/post/allPost`);
+};
+
 export const PostAPI = (post: PostData) => {
   return httpRequest.post("/post/add", post);
 };

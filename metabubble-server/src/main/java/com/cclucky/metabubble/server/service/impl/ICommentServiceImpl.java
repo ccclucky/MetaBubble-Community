@@ -161,4 +161,26 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
         redisCache.setCacheSet(key, commentSet);
         return res;
     }
+
+    @Override
+    public List<CommentDTO> findAllReply() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loginUser.getUser();
+        List<Comment> replies = commentDao.findByUserIdAndParentIdIsNotNullOrderByIdDesc(user.getId());
+        // 将回复转换为dto形式
+        return replies.stream().map(item -> {
+            CommentDTO dto = new CommentDTO();
+            BeanUtils.copyProperties(item, dto);
+            dto.setUsername(user.getUsername());
+            dto.setAvatar(user.getAvatar());
+            // 根据reply_user_id查询父评论
+            String username = userDao.findById(item.getReplyUserId()).orElse(new User()).getUsername();
+            dto.setReplyUsername(username);
+            // 获取点赞状态和点赞数
+            Set<Long> cacheSet = redisCache.getCacheSet(item.getId() + CommentEventEnum.LIKE.getAction());
+            dto.setLikeCount(cacheSet.size());
+            dto.setLike(cacheSet.contains(loginUser.getUser().getId()));
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }

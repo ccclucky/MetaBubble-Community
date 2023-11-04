@@ -12,11 +12,17 @@ public interface IPostService extends IBaseService<Post, Long> {
 
     Result<Post> add(Post post);
 
-    List<PostDTO> findPostVoList(LoginUser loginUser);
+    List<PostDTO> findPostVoList();
 
-    List<String> likeOrUnlike(Long postId, LoginUser loginUser);
+    List<String> likeOrUnlike(Long postId);
 
-    List<String> collectOrUnCollect(Long postId, LoginUser loginUser);
+    List<String> collectOrUnCollect(Long postId);
 
     PostDTO findPostVoListById(Long id);
+
+    List<PostDTO> findAllCollect();
+
+    List<PostDTO> findPostsByUserId();
+
+    List<PostDTO> findAllLike();
 }

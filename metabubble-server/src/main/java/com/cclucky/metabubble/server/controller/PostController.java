@@ -25,12 +25,12 @@ public class PostController {
     @GetMapping("/list")
     @ApiOperation("查询所有帖子相关信息")
     public Result<List<PostDTO>> list() {
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return Result.success(postService.findPostVoList(loginUser), "获取成功");
+        return Result.success(postService.findPostVoList(), "获取成功");
     }
 
     /**
      * 暂时废弃，没用到
+     *
      * @param id 帖子id
      * @return Result<PostDTO>
      */
@@ -49,16 +49,33 @@ public class PostController {
     @PostMapping("/like/{id}")
     @ApiOperation("点赞")
     public Result<Long> like(@PathVariable("id") Long postId) {
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<String> res = postService.likeOrUnlike(postId, loginUser);
+        List<String> res = postService.likeOrUnlike(postId);
         return Result.success(Long.parseLong(res.get(0)), res.get(1));
     }
 
     @PostMapping("/collect/{id}")
-    @ApiOperation("点赞")
+    @ApiOperation("收藏")
     public Result<Long> collect(@PathVariable("id") Long postId) {
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<String> res = postService.collectOrUnCollect(postId, loginUser);
+        List<String> res = postService.collectOrUnCollect(postId);
         return Result.success(Long.parseLong(res.get(0)), res.get(1));
     }
+
+    @GetMapping("/allCollect")
+    @ApiOperation("根据id获取收藏栏")
+    public Result<List<PostDTO>> allCollect() {
+        return Result.success(postService.findAllCollect(), "获取成功");
+    }
+
+    @GetMapping("/allLike")
+    @ApiOperation("根据id获取喜爱栏")
+    public Result<List<PostDTO>> allLike() {
+        return Result.success(postService.findAllLike(), "获取成功");
+    }
+
+    @GetMapping("/allPost")
+    @ApiOperation("根据id获取个人所有帖子")
+    public Result<List<PostDTO>> allPost() {
+        return Result.success(postService.findPostsByUserId(), "获取成功");
+    }
+
 }

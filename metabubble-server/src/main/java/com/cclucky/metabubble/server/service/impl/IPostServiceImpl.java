@@ -56,8 +56,29 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
         return Result.success(save, "发布成功");
     }
 
+    private PostDTO PostToDTO(Post post) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loginUser.getUser();
+        PostDTO postDTO = new PostDTO();
+        BeanUtils.copyProperties(post, postDTO);
+        // 获取post用户信息
+        User postUser = userDao.findById(post.getUserId()).orElse(new User());
+        postDTO.setUsername(postUser.getUsername());
+        postDTO.setAvatar(postUser.getAvatar());
+        // 获取点赞状态和点赞数
+        Set<Long> likeSet = redisCache.getCacheSet(post.getId() + "-" + PostActionEnum.LIKE.getAction());
+        postDTO.setLikeCount(likeSet.size());
+        postDTO.setLike(likeSet.contains(user.getId()));
+        // 获取收藏状态和收藏数
+        likeSet = redisCache.getCacheSet(post.getId() + "-" + PostActionEnum.COLLECT.getAction());
+        postDTO.setCollectCount(likeSet.size());
+        postDTO.setCollect(likeSet.contains(user.getId()));
+        return postDTO;
+    }
+
     @Override
-    public List<PostDTO> findPostVoList(LoginUser loginUser) {
+    public List<PostDTO> findPostVoList() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return postDao.findAll(Sort.by("createTime").descending()).stream().map(item -> {
             PostDTO postDTO = new PostDTO();
             BeanUtils.copyProperties(item, postDTO);
@@ -66,11 +87,11 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
             postDTO.setAvatar(user.getAvatar());
             postDTO.setUsername(user.getUsername());
             // 获取点赞状态和点赞数
-            Set<Long> cacheSet = redisCache.getCacheSet(item.getId() + PostActionEnum.LIKE.getAction());
+            Set<Long> cacheSet = redisCache.getCacheSet(item.getId() + "-" + PostActionEnum.LIKE.getAction());
             postDTO.setLikeCount(cacheSet.size());
             postDTO.setLike(cacheSet.contains(loginUser.getUser().getId()));
             // 获取收藏状态和收藏数
-            cacheSet = redisCache.getCacheSet(item.getId() + PostActionEnum.COLLECT.getAction());
+            cacheSet = redisCache.getCacheSet(item.getId() + "-" + PostActionEnum.COLLECT.getAction());
             postDTO.setCollectCount(cacheSet.size());
             postDTO.setCollect(cacheSet.contains(loginUser.getUser().getId()));
             // 获取评论状态和评论数
@@ -92,11 +113,11 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
         postDTO.setUsername(user.getUsername());
         postDTO.setAvatar(user.getAvatar());
         // 获取点赞状态和点赞数
-        Set<Long> cacheSet = redisCache.getCacheSet(id + PostActionEnum.LIKE.getAction());
+        Set<Long> cacheSet = redisCache.getCacheSet(id + "-" + PostActionEnum.LIKE.getAction());
         postDTO.setLikeCount(cacheSet.size());
         postDTO.setLike(cacheSet.contains(user.getId()));
         // 获取收藏状态和收藏数
-        cacheSet = redisCache.getCacheSet(id + PostActionEnum.COLLECT.getAction());
+        cacheSet = redisCache.getCacheSet(id + "-" + PostActionEnum.COLLECT.getAction());
         postDTO.setCollectCount(cacheSet.size());
         postDTO.setCollect(cacheSet.contains(user.getId()));
         // 获取评论状态和评论数
@@ -107,37 +128,87 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
     }
 
     @Override
-    public List<String> likeOrUnlike(Long postId, LoginUser loginUser) {
-        Long userId = loginUser.getUser().getId();
-        String key = postId + PostActionEnum.LIKE.getAction();
-        return actionToPost(key, userId, PostActionEnum.LIKE.getDesc());
+    public List<PostDTO> findAllCollect() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loginUser.getUser();
+        String key = user.getId() + "-" + PostActionEnum.USER_COLLECT.getAction();
+        Set<Long> cacheSet = redisCache.getCacheSet(key);
+        return cacheSet.stream().map(item -> {
+            Post post = postDao.findById(item).orElse(new Post());
+            return PostToDTO(post);
+        }).collect(Collectors.toList());
     }
 
     @Override
-    public List<String> collectOrUnCollect(Long postId, LoginUser loginUser) {
-        Long userId = loginUser.getUser().getId();
-        String key = postId + PostActionEnum.COLLECT.getAction();
-        return actionToPost(key, userId, PostActionEnum.COLLECT.getDesc());
+    public List<PostDTO> findPostsByUserId() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loginUser.getUser();
+        List<Post> posts = postDao.findPostsByUserIdOrderByCreateTimeDesc(user.getId());
+        return posts.stream().map(this::PostToDTO).collect(Collectors.toList());
     }
 
-    public List<String> actionToPost(String key, Long userId, String msg) {
+    @Override
+    public List<PostDTO> findAllLike() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loginUser.getUser();
+        String key = user.getId() + "-" + PostActionEnum.USER_LIKE.getAction();
+        // 逆序
+        Set<Long> cacheSet = redisCache.getCacheSet(key);
+        return cacheSet.stream().map(item -> {
+            Post post = postDao.findById(item).orElse(new Post());
+            return PostToDTO(post);
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> likeOrUnlike(Long postId) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = loginUser.getUser().getId();
+        String key = postId + "-" + PostActionEnum.LIKE.getAction();
+        String event = userId + "-" + PostActionEnum.USER_LIKE.getAction();
+        return actionToPost(key, userId, PostActionEnum.LIKE.getDesc(), event);
+    }
+
+    @Override
+    public List<String> collectOrUnCollect(Long postId) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = loginUser.getUser().getId();
+        String key = postId + "-" + PostActionEnum.COLLECT.getAction();
+        String event = userId + "-" + PostActionEnum.USER_COLLECT.getAction();
+        return actionToPost(key, userId, PostActionEnum.COLLECT.getDesc(), event);
+    }
+
+    public List<String> actionToPost(String key, Long userId, String msg, String event) {
         // 获取当前文章情况 key 为帖子id value为set，set的value为userid
         Set<Long> cacheSet = redisCache.getCacheSet(key);
         HashSet<Long> hashSet = new HashSet<>();
         Set<Long> postSet = CollectionUtils.isEmpty(cacheSet) ? hashSet : cacheSet;
+
+        // 为用户添加收藏和点赞记录
+        Set<Long> userEvent = redisCache.getCacheSet(event);
+        long postId = Long.parseLong(key.split("-")[0]);
+
         // 判断是否有过
         List<String> res = new ArrayList<>();
+        Set<Long> newSet = new LinkedHashSet<>();
         if (!postSet.contains(userId)) {
             postSet.add(userId);
             res.add(String.valueOf(postSet.size()));
             res.add(msg + "成功");
+            // set的头部插入
+            newSet.add(postId);
+            newSet.addAll(userEvent);
+            userEvent = newSet;
         } else {
             postSet.remove(userId);
             res.add(String.valueOf(postSet.size()));
             res.add("已取消" + msg);
+            userEvent.remove(postId);
         }
         redisCache.deleteObject(key);
         redisCache.setCacheSet(key, postSet);
+        redisCache.deleteObject(event);
+        redisCache.setCacheSet(event, userEvent);
         return res;
     }
 }

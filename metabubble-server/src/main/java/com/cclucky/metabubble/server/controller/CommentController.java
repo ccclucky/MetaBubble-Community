@@ -46,4 +46,11 @@ public class CommentController {
         List<String> res = commentService.likeOrUnlike(commentId);
         return Result.success(Long.parseLong(res.get(0)), res.get(1));
     }
+
+
+    @GetMapping("/allReply")
+    @ApiOperation("根据id获取个人所有回复")
+    public Result<List<CommentDTO>> allReply() {
+        return Result.success(commentService.findAllReply(), "获取成功");
+    }
 }

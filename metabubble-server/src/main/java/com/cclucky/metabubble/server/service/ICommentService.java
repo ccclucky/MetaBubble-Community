@@ -15,4 +15,6 @@ public interface ICommentService extends IBaseService<Comment, Long> {
     Comment reply(CommentVo commentVo);
 
     List<String> likeOrUnlike(Long commentId);
+
+    List<CommentDTO> findAllReply();
 }

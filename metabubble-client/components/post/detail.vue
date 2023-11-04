@@ -73,7 +73,7 @@
                 <PostComment :postId="post.id" :replyUserId="post.userId" class=" pb-2" />
             </div>
             <!-- 评论信息 -->
-            <div class="flex flex-1 flex-col">
+            <div class="flex flex-1 flex-col ">
                 <PostCart />
                 <Comment v-for="item in commentList" :key="item.id" :comment="item" :postId="post.id" />
             </div>

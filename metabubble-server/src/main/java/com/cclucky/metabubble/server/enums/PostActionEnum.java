@@ -11,7 +11,13 @@ public enum PostActionEnum {
 
     COMMENT("COMMENT", "评论"),
 
-    COLLECT("COLLECT", "收藏");
+    COLLECT("COLLECT", "收藏"),
+
+    USER_COLLECT("USER_COLLECT", "用户收藏"),
+
+    USER_LIKE("USER_LIKE", "用户喜欢"),
+
+    PUBLISH ("PUBLISH", "发布");
 
     private final String action;
 
