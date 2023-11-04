@@ -55,7 +55,6 @@
 
 <script setup>
 import { storeToRefs } from 'pinia';
-import store from '~/stores';
 import { usePostStoreHook } from '~/stores/post';
 
 const props = defineProps(['foo'])

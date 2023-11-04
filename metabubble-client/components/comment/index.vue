@@ -49,7 +49,7 @@
                 全部回复
             </p>
         </div>
-        <div class=" w-full h-max border border-base-300" v-if="flag">
+        <div class=" w-full h-max" v-if="flag">
             <CommentReply v-for="item in replies" :key="item" :reply="item" :postId="postId" :parentId="comment.id" />
         </div>
     </div>

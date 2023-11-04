@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-1 flex-col border-b border-base-300 p-4">
+    <div class="flex flex-1 flex-col p-4">
         <div class="flex flex-row w-full h-auto items-start">
             <div class="flex mr-3 w-auto">
                 <!-- avtar -->
@@ -23,7 +23,7 @@
         </div>
 
         <!-- 时间、点赞、收藏、评论信息 -->
-        <div class="flex flex-1 flex-row px-20 pt-2 h-full">
+        <div class="flex flex-1 flex-row px-20 pt-2 h-full" v-if="parentId">
             <div class="flex flex-1 justify-start items-center">
                 <p class="px-2">时间 · {{ reply.createTime }}</p>
             </div>

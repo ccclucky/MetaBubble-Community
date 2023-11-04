@@ -42,10 +42,13 @@
         </div>
         <!-- 数据 -->
         <div class="flex flex-row w-full h-auto border-b border-base-300">
-            <NuxtLink class="btn btn-ghost flex flex-1 justify-center items-center" v-for="item in dataItems"
-                :key="item.name" to="/home/view">
-                <span class="flex w-full h-full justify-center items-center text-xl font-normal hover:font-bold">{{ item.name }}</span>
-                <!-- <span class="text-xl font-normal">{{ item.name }}</span> -->
+            <NuxtLink
+                class="btn btn-ghost flex flex-1 justify-center items-center"
+                v-for="item in dataItems"
+                :key="item.name"
+                :to="item.path"
+            >
+                <span class="flex w-full h-full justify-center items-center text-xl font-normal">{{ item.name }}</span>
             </NuxtLink>
         </div>
         <NuxtPage />
@@ -55,22 +58,29 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useUserStoreHook } from '~/stores/user';
+import { useRouter } from 'vue-router';
 
 const dataItems = [
     {
         name: "帖子",
-        path: '/home/view'
+        path: '/home/post'
     },
     {
         name: "回复",
-        path: '/home/view'
+        path: '/home/reply'
     },
     {
         name: "喜欢",
-        path: '/home/view'
+        path: '/home/like'
     }
 ]
 
 const useUserStore = useUserStoreHook()
 const { userInfo } = storeToRefs(useUserStore)
+
+ const router = useRouter();
+// 在页面加载时默认选择模块
+const defaultModule = '/home/post'; // 你希望的默认模块
+router.replace(defaultModule);
+
 </script>

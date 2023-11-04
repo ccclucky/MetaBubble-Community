@@ -1,7 +1,7 @@
-import { addCommentAPI, addReplyAPI, getCommentsAPI, likeAPI } from './../../api/comment/index';
+import { RepliesAPI, addCommentAPI, addReplyAPI, getCommentsAPI, likeAPI } from './../../api/comment/index';
 import store from "@/stores";
 import { defineStore } from "pinia";
-import type { CommentData, CreateCommentData } from '~/api/comment/type';
+import type { CommentData, CreateCommentData, ReplyData } from '~/api/comment/type';
 
 export const useCommentStore = defineStore("comment", () => {
 
@@ -25,12 +25,20 @@ export const useCommentStore = defineStore("comment", () => {
         await likeAPI(commentId)
     }
 
+    const replies = ref<ReplyData[]>([]);
+    const getAllReplies = async () => {
+        const res: any = await RepliesAPI()
+        replies.value = res.data
+    }
+
     return {
         comments,
+        replies,
         getComments,
         addComment,
         addReply,
-        likeOrUnlike
+        likeOrUnlike,
+        getAllReplies
     }
 });
 
