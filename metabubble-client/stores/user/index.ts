@@ -1,5 +1,5 @@
-import { getUserInfoAPI } from "~/api/user";
-import type { UserData } from "~/api/user/type";
+import { UpdateUserInfoAPI, getUserInfoAPI } from "~/api/user";
+import type { UpdateUserData, UserData } from "~/api/user/type";
 import { loginAPI, logoutAPI } from "@/api/login/index";
 import store from "..";
 
@@ -30,6 +30,11 @@ export const useUserStore = defineStore("user", () => {
     cookie.value  = null
     isLogin.value = false
   };
+  
+  const updateInfo = async (user: UpdateUserData) => {
+    await UpdateUserInfoAPI(user);
+    getUserInfo()
+  };
 
   const isLogin = ref(false)
 
@@ -39,6 +44,7 @@ export const useUserStore = defineStore("user", () => {
     login,
     logout,
     getUserInfo,
+    updateInfo
   };
 });
 

@@ -1,11 +1,8 @@
 <template>
     <div class=" border-b border-base-300 p-4">
-        <NuxtLink class="flex flex-row w-full h-auto items-start" :to="{
-            name: 'post-detail', // 这里的路由名称应根据你的路由配置来定义
-            query: { post: JSON.stringify(post) } // 传递的参数，假设 post 有一个 id 字段
-        }">
+        <div class="flex flex-row w-full h-auto items-start">
             <div class="flex mr-3 w-auto">
-                <!-- avtar -->
+                <!-- avatar -->
                 <div class="flex w-10 h-10 rounded-full">
                     <img class="rounded-full w-full h-full block m-auto" :src="post.avatar">
                 </div>
@@ -17,13 +14,13 @@
                     <span>{{ post.username }} · {{ post.createTime }}</span>
                 </div>
                 <!-- 内容 -->
-                <div class="flex pt-2 text-left">
+                <div @click="handlePush" class="flex pt-2 text-left cursor-pointer">
                     <p class=" whitespace-pre-wrap max-h-36 truncate break-all">
                         {{ post.content }}
                     </p>
                 </div>
             </div>
-        </NuxtLink>
+        </div>
 
         <!-- 点赞、收藏、评论信息 -->
         <div class="flex flex-1 flex-row px-20 pt-2 h-full">
@@ -59,6 +56,14 @@ import { usePostStoreHook } from '~/stores/post';
 
 const props = defineProps(['foo'])
 const post = props.foo
+const router = useRouter()
+// 点击跳转事件
+const handlePush = () => {
+    router.push({
+        name: 'post-detail', // 这里的路由名称应根据你的路由配置来定义
+        query: { post: JSON.stringify(post) } // 传递的参数，假设 post 有一个 id 字段
+    })
+}
 
 const usePostStore = usePostStoreHook()
 // 点赞事件
@@ -76,11 +81,10 @@ const likeAndUnlike = async () => {
 }
 
 // 评论事件
-const router = useRouter()
 const handleComment = () => {
     router.push({
         name: 'post-detail', // 这里的路由名称应根据你的路由配置来定义
-        query: { post: JSON.stringify(post), comment: true} // 传递的参数，假设 post 有一个 id 字段
+        query: { post: JSON.stringify(post), comment: true } // 传递的参数，假设 post 有一个 id 字段
     })
 }
 
@@ -100,9 +104,10 @@ const CollectAndUnCollect = async () => {
 
 // 获取评论数量
 const { postList } = storeToRefs(usePostStore)
-const commentCount = ref(postList.value.find(item => item.id === post.id).commentCount)
+const curPost = postList.value.find(item => item.id === post.id)
+const commentCount = ref(0)
 watch(postList, () => {
     commentCount.value = postList.value.find(item => item.id === post.id).commentCount
 })
- 
+
 </script>

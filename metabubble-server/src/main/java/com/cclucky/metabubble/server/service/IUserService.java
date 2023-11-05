@@ -8,4 +8,6 @@ public interface IUserService extends IBaseService<User, Long> {
     UserDTO saveUser(UserVo userVo);
 
     UserDTO getInfo(String schoolId);
+
+    User updateById(UserVo userVo);
 }

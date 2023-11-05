@@ -32,6 +32,7 @@
                     <Icon v-if="false" name="majesticons:comment-2" class="w-5 h-5" />
                     <Icon v-else name="majesticons:comment-2-line" class="w-5 h-5" />
                 </div>
+                <p class="px-2"> 回复 </p>
             </div>
             <div class="flex flex-1 justify-start items-center cursor-pointer">
                 <div @click="likeAndUnlike" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">

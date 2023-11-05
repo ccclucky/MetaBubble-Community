@@ -1,10 +1,20 @@
 export interface UserData {
-    schoolId: number;
-    username: string;
-    email: string;
-    phone: string;
-    avatar: string;
-    roleName: string[];
-    createTime: string
-  }
-  
+  id: number
+  schoolId: string;
+  username: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  roleName: string[];
+  createTime: string;
+}
+
+export interface UpdateUserData {
+  id: number;
+  schoolId?: string;
+  username?: string;
+  email?: string;
+  phone?: string;
+  avatar?: string;
+  password?: string;
+}
