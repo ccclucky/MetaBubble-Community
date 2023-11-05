@@ -12,7 +12,6 @@
       <postInput v-if="useCenter.getCurrentItemTitle() == '泡泡广场' && cookie !== undefined"
         class="flex border-b border-base-300 backdrop-blur-sm top-0" />
     </no-ssr>
-
     <NuxtPage></NuxtPage>
   </div>
 </template>

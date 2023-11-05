@@ -1,6 +1,8 @@
 package com.cclucky.metabubble.server.service.impl;
 
 import com.cclucky.metabubble.server.common.utils.RedisCache;
+import com.cclucky.metabubble.server.common.utils.SpringBeanUtil;
+import com.cclucky.metabubble.server.pojo.vo.LoginVo;
 import com.cclucky.metabubble.server.pojo.vo.UserVo;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.entity.Role;
@@ -12,14 +14,22 @@ import com.cclucky.metabubble.server.repository.IRoleDao;
 import com.cclucky.metabubble.server.repository.IUserDao;
 import com.cclucky.metabubble.server.repository.IUserRoleDao;
 import com.cclucky.metabubble.server.service.IUserService;
+import com.cclucky.metabubble.server.service.LoginService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +44,7 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
     IUserRoleDao userRoleDao;
     @Autowired
     IRoleDao roleDao;
-    @Autowired
+    @Resource
     private RedisCache redisCache;
 
     @Override
@@ -50,6 +60,10 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
             // TODO: 2023/10/26 管理
             throw new RuntimeException("用户已存在");
         }
+        // 密码加密
+        String password = userDTO.getPassword();
+        BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+        userDTO.setPassword(bcryptPasswordEncoder.encode(password));
         // 创建用户实例并写进数据库
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
@@ -81,5 +95,36 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
         List<String> list = userInfo.getPermissions();
         userDTO.setRoleName(list);
         return userDTO;
+    }
+
+    @Override
+    public User updateById(UserVo userVo) {
+        if (Objects.isNull(userVo.getId())) {
+            throw new RuntimeException("id不能为空");
+        }
+        // 根据 id 查询数据
+        Optional<User> user = userDao.findById(userVo.getId());
+        if (user.isPresent()) {
+            //加密密码
+            String password = userVo.getPassword();
+            if (StringUtils.hasText(password)) {
+                BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+                userVo.setPassword(bcryptPasswordEncoder.encode(password));
+            }
+            User newUser = user.get();
+            SpringBeanUtil.copyPropertiesIgnoreNull(userVo, newUser);
+            // 修改数据
+            userDao.saveAndFlush(newUser);
+            // 同步更新权限信息
+            LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            loginUser.setUser(newUser);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginUser,null, loginUser.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // 更新redis
+            redisCache.setCacheObject("login:" + newUser.getId(), loginUser);
+            return newUser;
+        }
+        return new User();
     }
 }

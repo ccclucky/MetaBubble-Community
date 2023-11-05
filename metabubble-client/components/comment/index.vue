@@ -75,7 +75,7 @@ const props = defineProps(['comment', 'postId'])
 
 const { comment, postId } = toRefs(props);
 
-const replies = ref([])
+const replies = ref(comment?.value.replies)
 
 // 显示所有回复
 const flag = ref(false)
