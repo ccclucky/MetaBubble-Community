@@ -127,4 +127,16 @@ public class IUserServiceImpl extends BaseServiceImpl<User, Long> implements IUs
         }
         return new User();
     }
+
+    @Override
+    public UserDTO getInfoById(Long id) {
+        User user = userDao.findById(id).orElse(null);
+        if (Objects.isNull(user)) {
+            throw new RuntimeException("不存在用户");
+        } else {
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user, userDTO);
+            return userDTO;
+        }
+    }
 }

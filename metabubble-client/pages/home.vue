@@ -34,7 +34,8 @@
                     <!-- 关注和粉丝 -->
                     <div class="flex w-full h-8">
                         <NuxtLink class="text-xs font-normal mr-2" to="/focus">关注</NuxtLink>
-                        <NuxtLink class="text-xs font-normal ml-2" to="/focus">粉丝</NuxtLink>
+                        <NuxtLink class="text-xs font-normal ml-2" :to="{ name: 'fans-id', params: { id: userInfo?.id } }">粉丝
+                        </NuxtLink>
                     </div>
                 </div>
 
@@ -43,7 +44,7 @@
         <!-- 数据 -->
         <div class="flex flex-row w-full h-auto border-b border-base-300">
             <NuxtLink class="btn btn-ghost flex flex-1 justify-center items-center" v-for="item in dataItems"
-                :key="item.name" :to="item.path">
+                :key="item.name" :to="{ name: item.path, params: { id: userInfo?.id } }">
                 <span class="flex w-full h-full justify-center items-center text-xl font-normal">{{ item.name }}</span>
             </NuxtLink>
         </div>
@@ -64,19 +65,24 @@
                     </el-upload>
                 </div>
                 <div class="flex justify-center items-center pb-3 w-full">
-                    <input v-model="userInfoUpdate.schoolId" type="text" placeholder="学号" class="input input-bordered input-primary w-full max-w-xs" />
+                    <input v-model="userInfoUpdate.schoolId" type="text" placeholder="学号"
+                        class="input input-bordered input-primary w-full max-w-xs" />
                 </div>
                 <div class="flex justify-center items-center pb-3 w-full">
-                    <input v-model="userInfoUpdate.username" type="text" placeholder="昵称" class="input input-bordered input-primary w-full max-w-xs" />
+                    <input v-model="userInfoUpdate.username" type="text" placeholder="昵称"
+                        class="input input-bordered input-primary w-full max-w-xs" />
                 </div>
                 <div class="flex justify-center items-center pb-3 w-full">
-                    <input v-model="userInfoUpdate.email" type="text" placeholder="邮箱" class="input input-bordered input-primary w-full max-w-xs" />
+                    <input v-model="userInfoUpdate.email" type="text" placeholder="邮箱"
+                        class="input input-bordered input-primary w-full max-w-xs" />
                 </div>
                 <div class="flex justify-center items-center pb-3 w-full">
-                    <input v-model="userInfoUpdate.phone" type="text" placeholder="电话" class="input input-bordered input-primary w-full max-w-xs" />
+                    <input v-model="userInfoUpdate.phone" type="text" placeholder="电话"
+                        class="input input-bordered input-primary w-full max-w-xs" />
                 </div>
                 <div class="flex justify-center items-center w-full">
-                    <input v-model="userInfoUpdate.password" type="text" placeholder="密码" class="input input-bordered input-primary w-full max-w-xs" />
+                    <input v-model="userInfoUpdate.password" type="text" placeholder="密码"
+                        class="input input-bordered input-primary w-full max-w-xs" />
                 </div>
             </div>
             <div class="flex justify-center items-center">
@@ -84,7 +90,7 @@
                     <span>修改</span>
                 </button>
                 <button class="btn w-32 btn-circle font-bold text-lg ml-6">
-                    <span>取消</span> 
+                    <span>取消</span>
                 </button>
             </div>
         </div>
@@ -101,15 +107,15 @@ import type { UploadProps } from 'element-plus'
 const dataItems = [
     {
         name: "帖子",
-        path: '/home/post'
+        path: 'home-post-id'
     },
     {
         name: "回复",
-        path: '/home/reply'
+        path: 'home-reply-id'
     },
     {
         name: "喜欢",
-        path: '/home/like'
+        path: 'home-like-id'
     }
 ]
 
@@ -118,31 +124,31 @@ const { userInfo } = storeToRefs(useUserStore)
 
 const router = useRouter();
 // 在页面加载时默认选择模块
-const defaultModule = '/home/post'; // 你希望的默认模块
+const defaultModule = '/home/post-' + userInfo.value?.id; // 你希望的默认模块
 router.replace(defaultModule);
 
 // 更新用户信息
 const userInfoDialog = ref('userInfoDialog')
 const userInfoUpdate = reactive({
-  schoolId: "",
-  username: "",
-  email: "",
-  phone: "",
-  password: ""
+    schoolId: "",
+    username: "",
+    email: "",
+    phone: "",
+    password: ""
 })
 const handleUpdateInfo = () => {
     userInfoUpdate.schoolId = userInfo.value!.schoolId,
-    userInfoUpdate.username = userInfo.value!.username,
-    userInfoUpdate.email = userInfo.value!.email,
-    userInfoUpdate.phone = userInfo.value!.phone,
-    (userInfoDialog.value as any).showModal();
+        userInfoUpdate.username = userInfo.value!.username,
+        userInfoUpdate.email = userInfo.value!.email,
+        userInfoUpdate.phone = userInfo.value!.phone,
+        (userInfoDialog.value as any).showModal();
 }
 
 const resetForm = () => {
     userInfoUpdate.schoolId = "",
-    userInfoUpdate.username = "",
-    userInfoUpdate.email = "",
-    userInfoUpdate.phone = ""
+        userInfoUpdate.username = "",
+        userInfoUpdate.email = "",
+        userInfoUpdate.phone = ""
 }
 
 const updateUserInfo = () => {
@@ -158,15 +164,15 @@ const updateUserInfo = () => {
         console.log(res);
         (userInfoDialog.value as any).close()
     }).catch((err) => {
-        
+
     });
 }
 
 const avatar = ref('https://minio.cclucky.top/cclucky-blog/avatar/66fa0f9e7bd2c29dae746bf578795b45.png')
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
-  response,
-  uploadFile
+    response,
+    uploadFile
 ) => {
     avatar.value = URL.createObjectURL(uploadFile.raw!)
 }

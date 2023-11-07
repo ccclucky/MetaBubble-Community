@@ -13,12 +13,12 @@ export const CollectPostAPI = () => {
   return httpRequest.get(`/post/allCollect`);
 };
 
-export const LikePostAPI = () => {
-  return httpRequest.get(`/post/allLike`);
+export const LikePostAPI = (userId: number) => {
+  return httpRequest.get(`/post/allLike/${userId}`);
 };
 
-export const AllPostAPI = () => {
-  return httpRequest.get(`/post/allPost`);
+export const AllPostAPI = (userId: number) => {
+  return httpRequest.get(`/post/allPost/${userId}`);
 };
 
 export const PostAPI = (post: PostData) => {

@@ -140,18 +140,14 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
     }
 
     @Override
-    public List<PostDTO> findPostsByUserId() {
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = loginUser.getUser();
-        List<Post> posts = postDao.findPostsByUserIdOrderByCreateTimeDesc(user.getId());
+    public List<PostDTO> findPostsByUserId(Long id) {
+        List<Post> posts = postDao.findPostsByUserIdOrderByCreateTimeDesc(id);
         return posts.stream().map(this::PostToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<PostDTO> findAllLike() {
-        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = loginUser.getUser();
-        String key = user.getId() + "-" + PostActionEnum.USER_LIKE.getAction();
+    public List<PostDTO> findAllLike(Long id) {
+        String key = id + "-" + PostActionEnum.USER_LIKE.getAction();
         // 逆序
         Set<Long> cacheSet = redisCache.getCacheSet(key);
         return cacheSet.stream().map(item -> {

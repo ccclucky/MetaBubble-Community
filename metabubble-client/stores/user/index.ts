@@ -1,4 +1,4 @@
-import { UpdateUserInfoAPI, getUserInfoAPI } from "~/api/user";
+import { UpdateUserInfoAPI, getUserInfoAPI, getUserInfoByIdAPI } from "~/api/user";
 import type { UpdateUserData, UserData } from "~/api/user/type";
 import { loginAPI, logoutAPI } from "@/api/login/index";
 import store from "..";
@@ -20,6 +20,12 @@ export const useUserStore = defineStore("user", () => {
   const getUserInfo = async () => {
     const res: any = await getUserInfoAPI();
     userInfo.value = res.data;
+  };
+
+  // 根据id获取登录用户信息
+  const getUserInfoById = async (userId: number): Promise<any> => {
+    const res: any = await getUserInfoByIdAPI(userId);
+    return res.data
   };
 
   // 用户退出登录
@@ -44,7 +50,8 @@ export const useUserStore = defineStore("user", () => {
     login,
     logout,
     getUserInfo,
-    updateInfo
+    updateInfo,
+    getUserInfoById
   };
 });
 

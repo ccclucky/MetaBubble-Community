@@ -36,9 +36,12 @@ const style = ref({
     color: "hsl(var(--bc) / var(--tw-text-opacity))"
 });
 
+useUserStore.getUserInfo()
+const { userInfo } = storeToRefs(useUserStore)
+
 const post = async () => {
     const post = ref({
-        userId: 1,
+        userId: userInfo.value.id,
         content: text.value
     })
     usePostStore.post(post).then((res) => {
@@ -47,8 +50,6 @@ const post = async () => {
 
     });
 }
-useUserStore.getUserInfo()
-const { userInfo } = storeToRefs(useUserStore)
 </script>
 
 <style scoped>

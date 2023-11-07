@@ -1,7 +1,9 @@
 import { useRoute } from 'vue-router'
+import { useUserStoreHook } from '~/stores/user'
 
 export const useCenterStore = defineStore('center', () => {
     const route = useRoute()
+    const useUserStore = useUserStoreHook()
 
     const pathTitle = [
         {
@@ -39,9 +41,14 @@ export const useCenterStore = defineStore('center', () => {
     const currentPath = ref(route.path)
 
     const getCurrentItemTitle = () => {
-        currentPath.value = route.path
+        if (route.name === "focus-id") {
+            currentPath.value = '/focus'
+        } else {
+            currentPath.value = route.matched[0].path
+        }
+
         const currentItem =  pathTitle.find(item => item.path === currentPath.value)
-        return currentItem ? currentItem.title : ''
+        return currentItem ? currentItem.title : '信息'
     }
     return {
         currentPath,

@@ -2,14 +2,13 @@
 import { storeToRefs } from 'pinia';
 import { usePostStoreHook } from '~/stores/post';
 
+const route = useRoute()
 const usePostStore = usePostStoreHook()
-usePostStore.likeList()
-const { like } = storeToRefs(usePostStore)
-console.log(like.value);
+const posts = await usePostStore.AllPosts(route.params.id)
 </script>
 
 <template>
     <div>
-        <PostCard v-for="item in like" :key="item.id" :foo="item" />
+        <PostCard v-for="item in posts" :key="item.id" :foo="item" />
     </div>
 </template>

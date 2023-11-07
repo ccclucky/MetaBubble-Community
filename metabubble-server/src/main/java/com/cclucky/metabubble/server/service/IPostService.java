@@ -1,7 +1,6 @@
 package com.cclucky.metabubble.server.service;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.entity.Post;
 import com.cclucky.metabubble.server.pojo.dto.PostDTO;
 
@@ -22,7 +21,7 @@ public interface IPostService extends IBaseService<Post, Long> {
 
     List<PostDTO> findAllCollect();
 
-    List<PostDTO> findPostsByUserId();
+    List<PostDTO> findPostsByUserId(Long id);
 
-    List<PostDTO> findAllLike();
+    List<PostDTO> findAllLike(Long id);
 }

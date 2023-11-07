@@ -1,4 +1,7 @@
+import { getUserInfoAPI } from '~/api/user';
+import { useUserStore } from './user/index';
 import { useRoute } from 'vue-router'
+import { useUserStoreHook } from '~/stores/user'
 
 export const useSidebarStore = defineStore('sidebar', () => {
     const route = useRoute()
