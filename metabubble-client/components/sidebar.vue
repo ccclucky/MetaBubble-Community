@@ -86,12 +86,13 @@ import { useCenterStore } from '../stores/center'
 import { useUserStoreHook } from '~/stores/user'
 import { storeToRefs } from 'pinia';
 
+const route = useRoute()
 const useSidebar = useSidebarStore()
 const useCenter = useCenterStore()
 const useUserStore = useUserStoreHook()
 const router = useRouter()
 
-const {menu} = storeToRefs(useSidebar)
+const { menu } = storeToRefs(useSidebar)
 
 const logoutForm = ref('logoutForm');
 const handleLogout = async () => {

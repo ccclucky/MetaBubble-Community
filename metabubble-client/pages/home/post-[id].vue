@@ -2,10 +2,9 @@
 import { storeToRefs } from 'pinia';
 import { usePostStoreHook } from '~/stores/post';
 
+const route = useRoute()
 const usePostStore = usePostStoreHook()
-usePostStore.AllPosts()
-const { posts } = storeToRefs(usePostStore)
-
+const posts = await usePostStore.AllPosts(route.params.id)
 </script>
 
 <template>

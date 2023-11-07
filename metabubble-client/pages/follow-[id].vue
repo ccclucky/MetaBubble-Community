@@ -17,7 +17,7 @@ const useUserStore = useUserStoreHook()
 const allFollow = ref([])
 
 onMounted(async () => {
-    const res = await useFollowStore.getAllFollow(useUserStore.userInfo.id)
+    const res = await useFollowStore.getAllFollow(route.params.id)
     allFollow.value = res
 })
 </script>

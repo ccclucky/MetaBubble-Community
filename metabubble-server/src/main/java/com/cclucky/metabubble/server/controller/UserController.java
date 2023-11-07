@@ -37,6 +37,12 @@ public class UserController {
         return Result.success(userService.getInfo(schoolId), "查询成功");
     }
 
+    @GetMapping("/info/{id}")
+    @ApiOperation("根据用户id获取用户信息")
+    public Result<UserDTO> getInfoById(@PathVariable("id") Long id) {
+        return Result.success(userService.getInfoById(id), "查询成功");
+    }
+
     @PutMapping("/update")
     @ApiOperation("更新用户信息")
     public Result<User> update(@Validated(EditValidationGroup.class) @RequestBody UserVo userVo) {

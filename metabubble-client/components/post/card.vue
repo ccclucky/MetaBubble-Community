@@ -1,12 +1,12 @@
 <template>
     <div class=" border-b border-base-300 p-4">
         <div class="flex flex-row w-full h-auto items-start">
-            <div class="flex mr-3 w-auto">
+            <NuxtLink :to="{ name: 'info-id', params: { id: post.userId } }" class="flex mr-3 w-auto">
                 <!-- avatar -->
                 <div class="flex w-10 h-10 rounded-full">
                     <img class="rounded-full w-full h-full block m-auto" :src="post.avatar">
                 </div>
-            </div>
+            </NuxtLink>
             <!-- 个人信息、时间、内容 -->
             <div class="flex flex-col flex-1">
                 <!-- 信息 -->
@@ -70,14 +70,11 @@ const usePostStore = usePostStoreHook()
 const like = ref(post.like)
 const likeCount = ref(post.likeCount)
 const likeAndUnlike = async () => {
-    await usePostStore.likeOrUnlike(post.id).then((res) => {
-        like.value = !like.value
-        likeCount.value = like.value ? ++likeCount.value : --likeCount.value
-        post.like = like.value
-        post.likeCount = likeCount.value
-    }).catch((err) => {
-
-    });
+    await usePostStore.likeOrUnlike(post.id)
+    like.value = !like.value
+    likeCount.value = like.value ? ++likeCount.value : --likeCount.value
+    post.like = like.value
+    post.likeCount = likeCount.value
 }
 
 // 评论事件
@@ -92,14 +89,11 @@ const handleComment = () => {
 const collect = ref(post.collect)
 const collectCount = ref(post.collectCount)
 const CollectAndUnCollect = async () => {
-    await usePostStore.CollectOrUnCollect(post.id).then((res) => {
-        collect.value = !collect.value
-        collectCount.value = collect.value ? ++collectCount.value : --collectCount.value
-        post.collect = collect.value
-        post.collectCount = collectCount.value
-    }).catch((err) => {
-
-    });
+    await usePostStore.CollectOrUnCollect(post.id)
+    collect.value = !collect.value
+    collectCount.value = collect.value ? ++collectCount.value : --collectCount.value
+    post.collect = collect.value
+    post.collectCount = collectCount.value
 }
 
 // 获取评论数量
@@ -109,5 +103,4 @@ const commentCount = ref(0)
 watch(postList, () => {
     commentCount.value = postList.value.find(item => item.id === post.id).commentCount
 })
-
 </script>

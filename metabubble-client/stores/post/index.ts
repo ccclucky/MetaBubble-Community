@@ -38,16 +38,15 @@ export const usePostStore = defineStore("post", () => {
   };
 
   const like = ref<PostDTOData[]>([]);
-  const likeList = async () => {
-    const res: any = await LikePostAPI();
-    like.value = res.data;
+  const likeList = async (userId: number): Promise<any> => {
+    const res: any = await LikePostAPI(userId);
+    return res.data;
   };
 
-
   const posts = ref<PostDTOData[]>([]);
-  const AllPosts = async () => {
-    const res: any = await AllPostAPI();
-    posts.value = res.data;
+  const AllPosts = async (userId: number): Promise<any> => {
+    const res: any = await AllPostAPI(userId);
+    return res.data;
   };
   return {
     postList,
@@ -60,7 +59,7 @@ export const usePostStore = defineStore("post", () => {
     CollectOrUnCollect,
     collectList,
     AllPosts,
-    likeList
+    likeList,
   };
 });
 

@@ -66,16 +66,16 @@ public class PostController {
         return Result.success(postService.findAllCollect(), "获取成功");
     }
 
-    @GetMapping("/allLike")
+    @GetMapping("/allLike/{id}")
     @ApiOperation("根据id获取喜爱栏")
-    public Result<List<PostDTO>> allLike() {
-        return Result.success(postService.findAllLike(), "获取成功");
+    public Result<List<PostDTO>> allLike(@PathVariable("id") Long id) {
+        return Result.success(postService.findAllLike(id), "获取成功");
     }
 
-    @GetMapping("/allPost")
+    @GetMapping("/allPost/{id}")
     @ApiOperation("根据id获取个人所有帖子")
-    public Result<List<PostDTO>> allPost() {
-        return Result.success(postService.findPostsByUserId(), "获取成功");
+    public Result<List<PostDTO>> allPost(@PathVariable("id") Long id) {
+        return Result.success(postService.findPostsByUserId(id), "获取成功");
     }
 
 }
