@@ -33,8 +33,9 @@
 
                     <!-- 关注和粉丝 -->
                     <div class="flex w-full h-8">
-                        <NuxtLink class="text-xs font-normal mr-2" to="/focus">关注</NuxtLink>
-                        <NuxtLink class="text-xs font-normal ml-2" :to="{ name: 'fans-id', params: { id: userInfo?.id } }">粉丝
+                        <NuxtLink class="text-xs font-normal mr-2" to="/focus">关注 {{ followCount }}</NuxtLink>
+                        <NuxtLink class="text-xs font-normal ml-2" :to="{ name: 'fans-id', params: { id: userInfo?.id } }">
+                            粉丝 {{ fansCount }}
                         </NuxtLink>
                     </div>
                 </div>
@@ -103,6 +104,7 @@ import { useUserStoreHook } from '~/stores/user';
 import { useRouter } from 'vue-router';
 
 import type { UploadProps } from 'element-plus'
+import { useFollowStoreHook } from '~/stores/follow';
 
 const dataItems = [
     {
@@ -120,6 +122,7 @@ const dataItems = [
 ]
 
 const useUserStore = useUserStoreHook()
+await useUserStore.getUserInfo()
 const { userInfo } = storeToRefs(useUserStore)
 
 const router = useRouter();
@@ -176,4 +179,16 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
 ) => {
     avatar.value = URL.createObjectURL(uploadFile.raw!)
 }
+
+// 获取关注数和粉丝数
+const useFollowStore = useFollowStoreHook()
+const followCount = ref(0)
+const fansCount = ref(0)
+
+onMounted(async () => {
+    const res = await useFollowStore.getAllFollow(userInfo.value!.id)
+    const data = await useFollowStore.getAllFans(userInfo.value!.id)
+    followCount.value = res.length
+    fansCount.value = data.length
+})
 </script>

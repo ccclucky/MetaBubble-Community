@@ -11,7 +11,8 @@
             <div class="flex flex-col flex-1">
                 <!-- 信息 -->
                 <div class="flex w-auto h-6 pt-2">
-                    <span>{{ reply.username }} > {{ reply.replyUsername }}</span>
+                    <span v-if="!isNotify">{{ reply.username }} > {{ reply.replyUsername }}</span>
+                    <span v-else>{{ reply.username }} 回复了你的评论</span>
                 </div>
                 <!-- 内容 -->
                 <div class="flex pt-2 text-left">
@@ -66,6 +67,11 @@ const replyDialog = ref('replyDialog')
 const handleComment = () => {
     replyDialog.value.showModal()
 }
+
+// 判断是否是通知页
+const isNotify = ref(false)
+const route = useRoute()
+isNotify.value = route.matched[0].path === '/notify'
 
 // 点赞该评论
 // 判断是否点赞

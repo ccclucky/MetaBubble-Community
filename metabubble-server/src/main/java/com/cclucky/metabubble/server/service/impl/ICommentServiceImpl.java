@@ -114,7 +114,11 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
         // 当前帖子的用户则是评论的reply_user
         Long replyUserId = postDao.findById(commentVo.getPostId()).orElse(new Post()).getUserId();
         comment.setReplyUserId(replyUserId);
-        return commentDao.save(comment);
+        commentDao.save(comment);
+        // 被评论用户添加被评论记录
+        String key = replyUserId + "-" + CommentEventEnum.COMMENTED_REPLIED.getAction();
+        this.addCommentedOrReplied(key, comment.getId());
+        return comment;
     }
 
     @Override
@@ -134,7 +138,29 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
         Long userId = commentDao.findById(reply.getParentId()).orElse(new Comment()).getUserId();
         reply.setReplyUserId(userId);
         commentDao.save(reply);
+        // 被回复用户添加被回复记录
+        String key = userId + "-" + CommentEventEnum.COMMENTED_REPLIED.getAction();
+        this.addCommentedOrReplied(key, reply.getId());
         return reply;
+    }
+
+    /**
+     * 为用户添加评论或回复记录
+     * @param key key
+     * @param id 评论或回复数据id
+     */
+    private void addCommentedOrReplied(String key, Long id) {
+        Set<Long> cacheSet = redisCache.getCacheSet(key);
+        Set<Long> newSet = new LinkedHashSet<>();
+        if (CollectionUtils.isEmpty(cacheSet)) {
+            cacheSet.add(id);
+        } else {
+            newSet.add(id);
+            newSet.addAll(cacheSet);
+            cacheSet = newSet;
+        }
+        redisCache.deleteObject(key);
+        redisCache.setCacheSet(key, cacheSet);
     }
 
     @Override
@@ -168,19 +194,32 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
         User user = loginUser.getUser();
         List<Comment> replies = commentDao.findByUserIdAndParentIdIsNotNullOrderByIdDesc(user.getId());
         // 将回复转换为dto形式
-        return replies.stream().map(item -> {
-            CommentDTO dto = new CommentDTO();
-            BeanUtils.copyProperties(item, dto);
-            dto.setUsername(user.getUsername());
-            dto.setAvatar(user.getAvatar());
-            // 根据reply_user_id查询父评论
-            String username = userDao.findById(item.getReplyUserId()).orElse(new User()).getUsername();
-            dto.setReplyUsername(username);
-            // 获取点赞状态和点赞数
-            Set<Long> cacheSet = redisCache.getCacheSet(item.getId() + CommentEventEnum.LIKE.getAction());
-            dto.setLikeCount(cacheSet.size());
-            dto.setLike(cacheSet.contains(loginUser.getUser().getId()));
-            return dto;
-        }).collect(Collectors.toList());
+        return replies.stream().map(this::comment2DTO).collect(Collectors.toList());
+    }
+
+    private CommentDTO comment2DTO(Comment comment) {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loginUser.getUser();
+        CommentDTO dto = new CommentDTO();
+        BeanUtils.copyProperties(comment, dto);
+        dto.setUsername(user.getUsername());
+        dto.setAvatar(user.getAvatar());
+        // 根据reply_user_id查询父评论
+        String username = userDao.findById(comment.getReplyUserId()).orElse(new User()).getUsername();
+        dto.setReplyUsername(username);
+        // 获取点赞状态和点赞数
+        Set<Long> cacheSet = redisCache.getCacheSet(comment.getId() + CommentEventEnum.LIKE.getAction());
+        dto.setLikeCount(cacheSet.size());
+        dto.setLike(cacheSet.contains(loginUser.getUser().getId()));
+        return dto;
+    }
+
+    @Override
+    public List<CommentDTO> allNotifies() {
+        LoginUser loginUser = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String key = loginUser.getUser().getId() + "-" + CommentEventEnum.COMMENTED_REPLIED.getAction();
+        Set<Long> cacheSet = redisCache.getCacheSet(key);
+        return commentDao.findAllByIdIsInOrderByIdDesc(new ArrayList<>(cacheSet))
+                .stream().map(this::comment2DTO).collect(Collectors.toList());
     }
 }

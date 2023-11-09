@@ -19,6 +19,8 @@ public class CommentDTO {
     private String username;
     private String replyUsername;
     private String avatar;
+    private Long parentId;
+    private Long postId;
     private String content;
     private Integer likeCount;
     private boolean isLike;

@@ -53,7 +53,7 @@ export const useSidebarStore = defineStore('sidebar', () => {
 
     const getCurrentItemTitle = () => {
         currentPath.value = route.path
-        const currentItem = pathTitle.find(item => item.path === currentPath.value)
+        const currentItem = menuList.find(item => item.path === currentPath.value)
         return currentItem ? currentItem.title : ''
     }
     return {

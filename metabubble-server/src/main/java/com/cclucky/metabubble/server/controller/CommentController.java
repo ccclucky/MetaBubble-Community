@@ -35,7 +35,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments/{postId}")
-    @ApiOperation("添加评论")
+    @ApiOperation("获取帖子所有评论")
     public Result<List<CommentDTO>> getComments(@PathVariable("postId") Long postId) {
         return Result.success(commentService.getCommentsByPostId(postId), "成功获取评论");
     }
@@ -52,5 +52,11 @@ public class CommentController {
     @ApiOperation("根据id获取个人所有回复")
     public Result<List<CommentDTO>> allReply() {
         return Result.success(commentService.findAllReply(), "获取成功");
+    }
+
+    @GetMapping("/notifies")
+    @ApiOperation("获取当前用户所有通知")
+    public Result<List<CommentDTO>> allNotifies() {
+        return Result.success(commentService.allNotifies(), "获取成功");
     }
 }

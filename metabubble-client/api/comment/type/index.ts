@@ -3,6 +3,8 @@ export interface CommentData {
   userId: number;
   username: string;
   avatar: string;
+  postId: number;
+  parentId: number;
   createTime: string;
   like: boolean;
   likeCount: number;

@@ -12,7 +12,8 @@
             <div class="flex flex-col flex-1">
                 <!-- 信息 -->
                 <div class="flex w-auto h-6 pt-2">
-                    <span>{{ comment.username }}</span>
+                    <span v-if="!isNotify">{{ comment.username }}</span>
+                    <span v-else>{{ comment.username }} 评论了你的帖子</span>
                 </div>
                 <!-- 内容 -->
                 <div class="flex pt-2 text-left">
@@ -24,7 +25,7 @@
         </NuxtLink>
 
         <!-- 时间、点赞、收藏、评论信息 -->
-        <div class="flex flex-1 flex-row px-20 pt-2 h-full">
+        <div v-if="!isNotify"  class="flex flex-1 flex-row px-20 pt-2 h-full">
             <div class="flex flex-1 justify-start items-center">
                 <p class="px-2">时间·{{ comment.createTime }}</p>
             </div>
@@ -33,7 +34,7 @@
                     <Icon v-if="false" name="majesticons:comment-2" class="w-5 h-5" />
                     <Icon v-else name="majesticons:comment-2-line" class="w-5 h-5" />
                 </div>
-                <p class="px-2">{{ replies.length }}</p>
+                <p class="px-2">{{ replies?.length }}</p>
             </div>
             <div class="flex flex-1 justify-start items-center cursor-pointer">
                 <div @click="likeAndUnlike" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
@@ -44,7 +45,7 @@
             </div>
         </div>
 
-        <div class="flex justify-center items-center py-1">
+        <div v-if="!isNotify" class="flex justify-center items-center py-1">
             <p class="w-max cursor-pointer" @click="allReplyHandle">
                 全部回复
             </p>
@@ -110,4 +111,8 @@ const likeAndUnlike = () => {
     });
 }
 
+// 判断是否是通知页
+const isNotify = ref(false)
+const route = useRoute()
+isNotify.value = route.matched[0].path === '/notify'
 </script>

@@ -35,8 +35,10 @@
                     <!-- 关注和粉丝 -->
                     <div class="flex w-full h-8">
                         <!-- 显示数量 -->
-                        <NuxtLink class="text-xs font-normal mr-2" :to="{ name: 'follow-id', params: { id: user?.id } }">关注</NuxtLink>
-                        <NuxtLink class="text-xs font-normal ml-2" :to="{ name: 'fans-id', params: { id: user?.id } }">粉丝
+                        <NuxtLink class="text-xs font-normal mr-2" :to="{ name: 'follow-id', params: { id: user?.id } }">关注
+                            {{ followCount }}</NuxtLink>
+                        <NuxtLink class="text-xs font-normal ml-2" :to="{ name: 'fans-id', params: { id: user?.id } }">粉丝 {{
+                            fansCount }}
                         </NuxtLink>
                     </div>
                 </div>
@@ -100,9 +102,19 @@ watch(allFollow, () => {
     follow.value = allFollow.value.some(item => item.id === parseInt(id))
 })
 
+const followCount = ref(0)
+const fansCount = ref(0)
+
 onMounted(async () => {
     const res = await useFollowStore.getAllFollow(curUserId)
     allFollow.value = res
+
+
+    // 获取关注数和粉丝数
+    const count1 = await useFollowStore.getAllFollow(parseInt(id))
+    followCount.value = count1.length
+    const count2 = await useFollowStore.getAllFans(parseInt(id))
+    fansCount.value = count2.length
 })
 
 </script>
