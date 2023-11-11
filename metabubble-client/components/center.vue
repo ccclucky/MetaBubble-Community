@@ -25,5 +25,5 @@ const useCenter = useCenterStore()
 const themeStore = useThemeStore()
 
 const cookie = useCookie('token')
-</script>>
+</script>
 
