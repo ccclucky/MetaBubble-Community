@@ -7,10 +7,7 @@ import com.cclucky.metabubble.server.pojo.entity.LoginUser;
 import com.cclucky.metabubble.server.pojo.entity.Post;
 import com.cclucky.metabubble.server.pojo.entity.User;
 import com.cclucky.metabubble.server.pojo.dto.PostDTO;
-import com.cclucky.metabubble.server.repository.IBaseDao;
-import com.cclucky.metabubble.server.repository.ICommentDao;
-import com.cclucky.metabubble.server.repository.IPostDao;
-import com.cclucky.metabubble.server.repository.IUserDao;
+import com.cclucky.metabubble.server.repository.*;
 import com.cclucky.metabubble.server.service.IPostService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +35,8 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
     private RedisCache redisCache;
     @Autowired
     private ICommentDao commentDao;
+    @Autowired
+    private IPostDataDao postDataDao;
 
     @Override
     public IBaseDao<Post, Long> getBaseDao() {
@@ -202,6 +201,9 @@ public class IPostServiceImpl extends BaseServiceImpl<Post, Long> implements IPo
             userEvent.remove(postId);
         }
         redisCache.deleteObject(key);
+        if (postSet.isEmpty() && postDataDao.existsByPostId(postId)) {
+            postDataDao.removePostDataByPostId(postId);
+        }
         redisCache.setCacheSet(key, postSet);
         redisCache.deleteObject(event);
         redisCache.setCacheSet(event, userEvent);
