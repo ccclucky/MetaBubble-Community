@@ -10,10 +10,7 @@ import com.cclucky.metabubble.server.pojo.entity.User;
 import com.cclucky.metabubble.server.pojo.vo.CommentVo;
 import com.cclucky.metabubble.server.pojo.entity.Comment;
 import com.cclucky.metabubble.server.pojo.entity.LoginUser;
-import com.cclucky.metabubble.server.repository.IBaseDao;
-import com.cclucky.metabubble.server.repository.ICommentDao;
-import com.cclucky.metabubble.server.repository.IPostDao;
-import com.cclucky.metabubble.server.repository.IUserDao;
+import com.cclucky.metabubble.server.repository.*;
 import com.cclucky.metabubble.server.service.ICommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +39,9 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
 
     @Resource
     private RedisCache redisCache;
+
+    @Autowired
+    private ICommentDataDao commentDataDao;
 
     @Override
     public IBaseDao<Comment, Long> getBaseDao() {
@@ -184,6 +184,9 @@ public class ICommentServiceImpl extends BaseServiceImpl<Comment, Long> implemen
             res.add("已取消" + CommentEventEnum.LIKE.getDesc());
         }
         redisCache.deleteObject(key);
+        if (commentSet.isEmpty() && commentDataDao.existsByCommentId(commentId)) {
+            commentDataDao.readCommentDataByCommentId(commentId);
+        }
         redisCache.setCacheSet(key, commentSet);
         return res;
     }

@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CommentEventEnum {
 
-    LIKE("LIKE", "点赞"),
+    LIKE("COMMENT_LIKE", "点赞"),
 
     COMMENT("COMMENT", "评论"),
 
