@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.vo;
+package com.cclucky.metabubble.server.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

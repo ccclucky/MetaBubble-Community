@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.dto;
+package com.cclucky.metabubble.server.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -7,24 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommentDTO {
+public class PostDTO {
     private Long id;
     private Long userId;
     private String username;
-    private String replyUsername;
     private String avatar;
-    private Long parentId;
-    private Long postId;
     private String content;
     private Integer likeCount;
     private boolean isLike;
-    @JsonFormat(pattern = "MM-dd HH:mm")
+    private Integer collectCount;
+    private boolean isCollect;
+    private Integer commentCount;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    private List<CommentDTO> replies;
 }

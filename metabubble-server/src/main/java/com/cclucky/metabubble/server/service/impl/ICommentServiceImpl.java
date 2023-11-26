@@ -1,15 +1,13 @@
 package com.cclucky.metabubble.server.service.impl;
 
-import com.cclucky.metabubble.server.common.result.Result;
 import com.cclucky.metabubble.server.common.utils.RedisCache;
 import com.cclucky.metabubble.server.enums.CommentEventEnum;
-import com.cclucky.metabubble.server.enums.PostActionEnum;
-import com.cclucky.metabubble.server.pojo.dto.CommentDTO;
-import com.cclucky.metabubble.server.pojo.entity.Post;
-import com.cclucky.metabubble.server.pojo.entity.User;
-import com.cclucky.metabubble.server.pojo.vo.CommentVo;
-import com.cclucky.metabubble.server.pojo.entity.Comment;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
+import com.cclucky.metabubble.server.model.dto.CommentDTO;
+import com.cclucky.metabubble.server.model.entity.Post;
+import com.cclucky.metabubble.server.model.entity.User;
+import com.cclucky.metabubble.server.model.vo.CommentVo;
+import com.cclucky.metabubble.server.model.entity.Comment;
+import com.cclucky.metabubble.server.model.entity.LoginUser;
 import com.cclucky.metabubble.server.repository.*;
 import com.cclucky.metabubble.server.service.ICommentService;
 import org.springframework.beans.BeanUtils;

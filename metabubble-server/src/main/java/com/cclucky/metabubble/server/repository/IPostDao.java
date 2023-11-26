@@ -1,6 +1,6 @@
 package com.cclucky.metabubble.server.repository;
 
-import com.cclucky.metabubble.server.pojo.entity.Post;
+import com.cclucky.metabubble.server.model.entity.Post;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

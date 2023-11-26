@@ -1,7 +1,6 @@
-package com.cclucky.metabubble.server.pojo.vo;
+package com.cclucky.metabubble.server.model.vo;
 
 import com.cclucky.metabubble.server.group.AddValidationGroup;
-import com.cclucky.metabubble.server.group.EditValidationGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

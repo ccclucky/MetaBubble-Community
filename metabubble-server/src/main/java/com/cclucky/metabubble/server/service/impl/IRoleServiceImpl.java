@@ -1,6 +1,6 @@
 package com.cclucky.metabubble.server.service.impl;
 
-import com.cclucky.metabubble.server.pojo.entity.Role;
+import com.cclucky.metabubble.server.model.entity.Role;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IRoleDao;
 import com.cclucky.metabubble.server.service.IRoleService;

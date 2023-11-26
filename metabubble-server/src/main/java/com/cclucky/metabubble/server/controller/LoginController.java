@@ -2,8 +2,8 @@ package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
 import com.cclucky.metabubble.server.common.utils.RedisCache;
-import com.cclucky.metabubble.server.pojo.vo.LoginVo;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
+import com.cclucky.metabubble.server.model.vo.LoginVo;
+import com.cclucky.metabubble.server.model.entity.LoginUser;
 import com.cclucky.metabubble.server.service.LoginService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

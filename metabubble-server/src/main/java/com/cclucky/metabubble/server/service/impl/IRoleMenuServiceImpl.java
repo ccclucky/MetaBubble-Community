@@ -1,9 +1,9 @@
 package com.cclucky.metabubble.server.service.impl;
 
-import com.cclucky.metabubble.server.pojo.vo.RoleMenuVo;
-import com.cclucky.metabubble.server.pojo.entity.Menu;
-import com.cclucky.metabubble.server.pojo.entity.Role;
-import com.cclucky.metabubble.server.pojo.entity.RoleMenu;
+import com.cclucky.metabubble.server.model.vo.RoleMenuVo;
+import com.cclucky.metabubble.server.model.entity.Menu;
+import com.cclucky.metabubble.server.model.entity.Role;
+import com.cclucky.metabubble.server.model.entity.RoleMenu;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IMenuDao;
 import com.cclucky.metabubble.server.repository.IRoleDao;

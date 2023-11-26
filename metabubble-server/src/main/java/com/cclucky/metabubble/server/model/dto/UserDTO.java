@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.dto;
+package com.cclucky.metabubble.server.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -7,22 +7,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostDTO {
+public class UserDTO {
     private Long id;
-    private Long userId;
+    private String schoolId;
     private String username;
+    private String email;
+    private String phone;
     private String avatar;
-    private String content;
-    private Integer likeCount;
-    private boolean isLike;
-    private Integer collectCount;
-    private boolean isCollect;
-    private Integer commentCount;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private List<String> roleName;
+    @JsonFormat(pattern = "yyyy-MM")
     private Date createTime;
 }

@@ -2,7 +2,7 @@ package com.cclucky.metabubble.server.filter;
 
 import com.cclucky.metabubble.server.common.utils.JwtUtil;
 import com.cclucky.metabubble.server.common.utils.RedisCache;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
+import com.cclucky.metabubble.server.model.entity.LoginUser;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

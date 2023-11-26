@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.entity;
+package com.cclucky.metabubble.server.model.entity;
 
 import java.io.Serializable;
 

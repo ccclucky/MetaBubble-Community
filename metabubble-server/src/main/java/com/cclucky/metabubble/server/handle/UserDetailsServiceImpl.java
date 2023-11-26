@@ -1,6 +1,6 @@
 package com.cclucky.metabubble.server.handle;
 
-import com.cclucky.metabubble.server.pojo.entity.*;
+import com.cclucky.metabubble.server.model.entity.*;
 import com.cclucky.metabubble.server.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

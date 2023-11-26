@@ -1,7 +1,7 @@
 package com.cclucky.metabubble.server.service;
 
-import com.cclucky.metabubble.server.pojo.vo.RoleMenuVo;
-import com.cclucky.metabubble.server.pojo.entity.RoleMenu;
+import com.cclucky.metabubble.server.model.vo.RoleMenuVo;
+import com.cclucky.metabubble.server.model.entity.RoleMenu;
 
 import java.util.List;
 
