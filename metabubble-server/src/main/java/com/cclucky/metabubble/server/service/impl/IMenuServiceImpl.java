@@ -1,6 +1,6 @@
 package com.cclucky.metabubble.server.service.impl;
 
-import com.cclucky.metabubble.server.pojo.entity.Menu;
+import com.cclucky.metabubble.server.model.entity.Menu;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IMenuDao;
 import com.cclucky.metabubble.server.service.IMenuService;

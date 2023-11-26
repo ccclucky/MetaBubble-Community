@@ -3,16 +3,15 @@ package com.cclucky.metabubble.server.controller;
 import com.cclucky.metabubble.server.common.result.Result;
 import com.cclucky.metabubble.server.group.AddValidationGroup;
 import com.cclucky.metabubble.server.group.EditValidationGroup;
-import com.cclucky.metabubble.server.pojo.entity.User;
-import com.cclucky.metabubble.server.pojo.vo.UserVo;
-import com.cclucky.metabubble.server.pojo.dto.UserDTO;
+import com.cclucky.metabubble.server.model.entity.User;
+import com.cclucky.metabubble.server.model.vo.UserVo;
+import com.cclucky.metabubble.server.model.dto.UserDTO;
 import com.cclucky.metabubble.server.service.IUserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 
 /**

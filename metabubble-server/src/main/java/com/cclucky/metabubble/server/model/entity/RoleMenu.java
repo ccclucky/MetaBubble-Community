@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.entity;
+package com.cclucky.metabubble.server.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +12,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "t_follow")
-public class Follow implements BaseEntity {
+@Table(name = "t_role_menu")
+public class RoleMenu implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "role_id", nullable = false)
+    private Long roleId;
 
-    @Column(name = "follow_id", nullable = false)
-    private Long followId;
+    @Column(name = "menu_id", nullable = false)
+    private Long menuId;
 }

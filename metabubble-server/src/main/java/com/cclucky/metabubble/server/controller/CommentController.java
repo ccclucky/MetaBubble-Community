@@ -1,9 +1,9 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.dto.CommentDTO;
-import com.cclucky.metabubble.server.pojo.vo.CommentVo;
-import com.cclucky.metabubble.server.pojo.entity.Comment;
+import com.cclucky.metabubble.server.model.dto.CommentDTO;
+import com.cclucky.metabubble.server.model.vo.CommentVo;
+import com.cclucky.metabubble.server.model.entity.Comment;
 import com.cclucky.metabubble.server.service.ICommentService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

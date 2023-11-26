@@ -1,4 +1,4 @@
-package com.cclucky.metabubble.server.pojo.entity;
+package com.cclucky.metabubble.server.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,19 +12,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "t_post_data")
-public class PostData implements BaseEntity {
+@Table(name = "t_comment_data")
+public class CommentData implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "post_id",columnDefinition="Long not null COMMENT '帖子id'")
-    private Long postId;
+    @Column(name = "comment_id",columnDefinition="Long not null COMMENT '评论id'")
+    private Long commentId;
 
     @Column(name = "like_count",columnDefinition="int not null COMMENT '喜爱数'")
     private Integer likeCount;
-
-    @Column(name = "collect_count",columnDefinition="int not null COMMENT '收藏数'")
-    private Integer collectCount;
 }
+

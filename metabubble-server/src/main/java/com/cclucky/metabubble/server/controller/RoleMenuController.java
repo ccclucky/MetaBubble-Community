@@ -1,8 +1,8 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.vo.RoleMenuVo;
-import com.cclucky.metabubble.server.pojo.entity.RoleMenu;
+import com.cclucky.metabubble.server.model.vo.RoleMenuVo;
+import com.cclucky.metabubble.server.model.entity.RoleMenu;
 import com.cclucky.metabubble.server.service.IRoleMenuService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

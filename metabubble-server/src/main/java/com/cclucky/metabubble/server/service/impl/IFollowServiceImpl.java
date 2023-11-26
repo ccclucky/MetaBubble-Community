@@ -2,9 +2,9 @@ package com.cclucky.metabubble.server.service.impl;
 
 import com.cclucky.metabubble.server.common.utils.RedisCache;
 import com.cclucky.metabubble.server.enums.UserEventEnum;
-import com.cclucky.metabubble.server.pojo.dto.UserDTO;
-import com.cclucky.metabubble.server.pojo.entity.Follow;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
+import com.cclucky.metabubble.server.model.dto.UserDTO;
+import com.cclucky.metabubble.server.model.entity.Follow;
+import com.cclucky.metabubble.server.model.entity.LoginUser;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.repository.IFollowDao;
 import com.cclucky.metabubble.server.service.IFollowService;

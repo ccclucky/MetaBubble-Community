@@ -1,7 +1,7 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.entity.UserRole;
+import com.cclucky.metabubble.server.model.entity.UserRole;
 import com.cclucky.metabubble.server.service.IUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

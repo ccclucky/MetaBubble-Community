@@ -1,13 +1,11 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
-import com.cclucky.metabubble.server.pojo.entity.Post;
-import com.cclucky.metabubble.server.pojo.dto.PostDTO;
+import com.cclucky.metabubble.server.model.entity.Post;
+import com.cclucky.metabubble.server.model.dto.PostDTO;
 import com.cclucky.metabubble.server.service.IPostService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

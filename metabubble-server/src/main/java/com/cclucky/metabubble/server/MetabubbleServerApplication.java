@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"com.cclucky.metabubble.server.pojo.entity"})
+@EntityScan(basePackages = {"com.cclucky.metabubble.server.model.entity"})
 @EnableJpaRepositories(basePackages = {"com.cclucky.metabubble.server.repository"})
 @EnableScheduling
 public class MetabubbleServerApplication {

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.cclucky.metabubble.server.pojo.entity.BaseEntity;
+import com.cclucky.metabubble.server.model.entity.BaseEntity;
 import com.cclucky.metabubble.server.repository.IBaseDao;
 import com.cclucky.metabubble.server.service.IBaseService;
 import lombok.extern.slf4j.Slf4j;

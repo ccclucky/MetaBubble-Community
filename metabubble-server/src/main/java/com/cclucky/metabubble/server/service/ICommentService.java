@@ -1,9 +1,8 @@
 package com.cclucky.metabubble.server.service;
 
-import com.cclucky.metabubble.server.pojo.dto.CommentDTO;
-import com.cclucky.metabubble.server.pojo.entity.LoginUser;
-import com.cclucky.metabubble.server.pojo.vo.CommentVo;
-import com.cclucky.metabubble.server.pojo.entity.Comment;
+import com.cclucky.metabubble.server.model.dto.CommentDTO;
+import com.cclucky.metabubble.server.model.vo.CommentVo;
+import com.cclucky.metabubble.server.model.entity.Comment;
 
 import java.util.List;
 

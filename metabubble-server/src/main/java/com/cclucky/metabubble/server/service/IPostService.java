@@ -1,8 +1,8 @@
 package com.cclucky.metabubble.server.service;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.entity.Post;
-import com.cclucky.metabubble.server.pojo.dto.PostDTO;
+import com.cclucky.metabubble.server.model.entity.Post;
+import com.cclucky.metabubble.server.model.dto.PostDTO;
 
 import java.util.List;
 

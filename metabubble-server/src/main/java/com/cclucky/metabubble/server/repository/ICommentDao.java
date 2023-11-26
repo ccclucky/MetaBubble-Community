@@ -1,6 +1,6 @@
 package com.cclucky.metabubble.server.repository;
 
-import com.cclucky.metabubble.server.pojo.entity.Comment;
+import com.cclucky.metabubble.server.model.entity.Comment;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

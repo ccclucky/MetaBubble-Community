@@ -1,7 +1,7 @@
 package com.cclucky.metabubble.server.controller;
 
 import com.cclucky.metabubble.server.common.result.Result;
-import com.cclucky.metabubble.server.pojo.entity.Menu;
+import com.cclucky.metabubble.server.model.entity.Menu;
 import com.cclucky.metabubble.server.service.IMenuService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
