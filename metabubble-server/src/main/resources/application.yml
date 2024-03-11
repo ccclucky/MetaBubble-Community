@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 9999
 
 spring:
   datasource:
-    url: jdbc:mysql://192.168.100.92:13306/db_meta?useSSL=false&autoReconnect=true&characterEncoding=utf8
+    url: jdbc:mysql://43.139.169.144:13306/db_meta?useSSL=false&autoReconnect=true&characterEncoding=utf8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: cclucky
@@ -14,7 +14,7 @@ spring:
     max-active: 200
   redis:
     database: 2
-    host: 192.168.100.92
+    host: 43.139.169.144
     port: 16379
     password: cclucky
     lettuce:
