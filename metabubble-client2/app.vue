@@ -2,14 +2,12 @@
 
 <template>
   <div class="w-full min-h-full flex flex-row justify-center main">
-    <div
+    <div :data-theme='themeStore.nowTheme'
       class="rounded-xl contain md:8/12 w-full min-h-full flex flex-row justify-center max-w-7xl relative">
       <!-- 侧边栏 -->
       <sidebar />
 
-      <dialog
-        id="postDialog"
-        class="modal flex items-start justify-center w-full h-full top-24">
+      <dialog id="postDialog" class="modal flex items-start justify-center w-full h-full top-24">
         <div class="flex w-1/3 h-1/3">
           <postDialog />
         </div>
@@ -23,14 +21,21 @@
     </div>
   </div>
 </template>
+<script setup>
+import { useThemeStore } from "../stores/theme";
+const themeStore = useThemeStore()
+
+
+</script>
 <style>
 .contain {
 
   /* backdrop-filter: blur(3px); */
-   
+
 }
-main{
-  background: #323232!important;
-  
+
+main {
+  background: #323232 !important;
+
 }
 </style>

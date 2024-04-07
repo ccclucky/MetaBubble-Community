@@ -1,5 +1,5 @@
 <template>
-  <div class="  flex items-center flex-row w-26 md:w-64">
+  <div class="flex items-center flex-row w-26 md:w-64">
     <div style="border-right: 4px solid rgba(235, 235, 235, 0.18);
 " class="rounded-l-xl md:w-64 w-24 bg-base-200 top-0 h-screen fixed flex flex-col px-4  border-base-300">
       <!-- logo -->

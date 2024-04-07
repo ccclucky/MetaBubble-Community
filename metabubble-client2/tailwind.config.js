@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-
-
+// import { useThemeStore } from "../stores/theme";
+// const themeStore = useThemeStore()
+// themeStore.changetheme(1)
 const themeone = {
   "color-scheme": "light",
   "primary": "#2b44e7",
@@ -72,8 +73,8 @@ module.exports = {
   },
   daisyui: {
     themes: [{
-      "wireframe": themeone
-    }, "black", "light"],
+      base: themeone
+    }, { dark: themetwo }, { retro: themethree }, "black", "light"],
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
 }
