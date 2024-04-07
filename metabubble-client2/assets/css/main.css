@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+body {
+    @apply bg-base-300 text-base-content;
+    font-family: 'Helvetica Neue',Helvetica,'PingFang SC','Hiragino Sans GB','Microsoft YaHei','微软雅黑',Arial,sans-serif;
+    --size: 150px; /* control the size */
+    --color: #d1bdbd;
+    background: #1D2B64;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #F8CDDA, #1D2B64);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #F8CDDA, #1D2B64); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    
+    
+    
+    background-attachment: fixed;
+    background-clip: content-box;
+    
+    
+}

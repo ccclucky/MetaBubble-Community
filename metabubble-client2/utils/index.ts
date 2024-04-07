@@ -15,7 +15,7 @@ class HttpRequest {
     url: string,
     method: Methods,
     data: any,
-    options?: UseFetchOptions<T>,
+    options?: UseFetchOptions<T>
   ) {
     return new Promise((resolve, reject) => {
       const newOptions: UseFetchOptions<T> = {
@@ -23,14 +23,14 @@ class HttpRequest {
         method: method,
         ...options,
       };
-      const token = useCookie("token")
-      
+      const token = useCookie("token");
+
       if (token.value !== undefined) {
         newOptions.headers = {
           ...newOptions.headers,
           "Content-Type": "application/json",
-          "token": token.value!
-        }
+          token: token.value!,
+        };
       }
 
       if (method === "GET" || method === "DELETE") {
@@ -74,5 +74,3 @@ class HttpRequest {
 const httpRequest = new HttpRequest();
 
 export default httpRequest;
-
-
