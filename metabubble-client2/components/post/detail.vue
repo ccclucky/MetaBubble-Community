@@ -43,10 +43,20 @@
                             总结：{{ aitext }}
                         </div>
                     </div> -->
-                    <div class="tooltip  tooltip-right" :data-tip="aitext">
-                        <img @click="handleAI" src="/AI.png" class="w-8 h-8 rounded-full relative" />
-
+                    <!-- <div onclick="handleShowTip" class="tooltip tooltip-right" :data-tip="aitext"> -->
+                    <div :class="{ 'tooltip-open': showTip }" class="tooltip tooltip-right relative" :data-tip="aitext">
+                        <img @click="handleAI" src="/AI.png" class="w-8 h-8 rounded-full relative cursor-pointer" />
+                        <button v-if="showTip" @click="main" class="w-8 h-8 rounded-full top-3px bg-white flex justify-center items-center">
+                            <svg t="1712554624290" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" p-id="1576" width="16" height="16"
+                                data-spm-anchor-id="a313x.search_index.0.i4.95bf3a81TPXRb6">
+                                <path
+                                    d="M874.017052 799.776769c-7.426863 7.625291-19.615989 7.795371-27.24128 0.368508-7.653637-7.426863-7.795371-19.615989-0.396855-27.24128 36.425645-37.44613 65.736242-81.893921 85.749087-131.160668 19.247481-47.367512 29.849186-99.185472 29.849186-153.554646 0-54.340826-10.601705-106.187133-29.849186-153.526298-20.012845-49.266748-49.323441-93.714539-85.749087-131.160669-7.398516-7.625291-7.256782-19.842764 0.396855-27.269627 7.625291-7.398516 19.814417-7.228435 27.24128 0.396856 39.912302 41.046174 72.029233 89.689292 93.88462 143.519876 21.090023 51.931348 32.712213 108.653305 32.712214 168.039862 0 59.414904-11.62219 116.136862-32.712214 168.039863-21.855387 53.85893-53.972318 102.502048-93.88462 143.548223z m-121.239287-132.861477c-7.426863 7.625291-19.615989 7.795371-27.24128 0.368508s-7.795371-19.615989-0.368508-27.24128c19.417562-19.956151 35.036652-43.65408 45.723397-69.931569 10.233197-25.257004 15.902558-52.895139 15.902558-81.922268 0-28.998782-5.669361-56.636917-15.902558-81.893921-10.686746-26.277489-26.305835-49.975418-45.723397-69.931569-7.426863-7.625291-7.256782-19.842764 0.368508-27.24128 7.625291-7.426863 19.814417-7.256782 27.24128 0.368509 22.932566 23.556195 41.357989 51.449452 53.887278 82.319123 12.104086 29.792493 18.765585 62.334625 18.765585 96.379138s-6.661499 66.614993-18.765585 96.407486c-12.557635 30.869671-30.954712 58.762928-53.887278 82.319123zM353.994906 269.351345H78.123796v437.73137h275.87111c4.337061 0 8.362308 1.41734 11.565497 3.826819l235.703687 149.217584V116.278596l-237.00764 150.039641c-3.174842 2.012623-6.74654 2.976415-10.261544 2.976415v0.056693zM74.778873 230.686303h273.716753l235.646994-149.189237c5.017385-3.146495 10.743439-5.045731 16.639575-5.612668 5.726055-0.566936 11.593843 0.113387 17.064777 2.069317v0.056694l0.08504 0.028346c6.236297 2.239398 11.395416 5.811095 15.108847 10.289891 4.450448 5.357546 6.859927 11.820618 6.859927 18.878972v761.990477c0 7.058355-2.409478 13.493079-6.859927 18.878973-3.344923 4.025246-7.880412 7.313476-13.294651 9.58122-0.62363 0.283468-1.247259 0.538589-1.899236 0.765364-5.470933 1.95593-11.338722 2.636253-17.064777 2.097663-5.896136-0.566936-11.62219-2.466172-16.639575-5.612667l-235.646994-149.189237H74.778873c-8.730816 0-16.866349-2.891374-23.017606-7.596944-7.596944-5.811095-12.302514-14.258443-12.302514-23.953051V262.20795c0-9.694607 4.733917-18.141955 12.330861-23.924703 6.12291-4.677223 14.28679-7.596944 22.989259-7.596944z"
+                                    fill="" p-id="1577"></path>
+                            </svg>
+                        </button>
                     </div>
+
                 </div>
                 <div class="flex">
                     <div class="flex   justify-start items-center">
@@ -127,12 +137,6 @@
                 </div>
 
             </div>
-
-
-
-
-
-
         </div>
 
         <!-- footer -->
@@ -158,6 +162,24 @@
 import { usePostStoreHook } from '~/stores/post';
 import { useCommentStoreHook } from '~/stores/comment';
 import { storeToRefs } from 'pinia';
+import OpenAI from "openai";
+async function main() {
+    const openai = new OpenAI({
+        apiKey: "",
+        dangerouslyAllowBrowser: true
+    });
+
+    const mp3 = await openai.audio.speech.create({
+        model: "tts-1",
+        voice: "shimmer",
+        input: aitext.value,
+    });
+
+    const blob = new Blob([await mp3.arrayBuffer()], { type: 'audio/mp3' });
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.play();
+}
 
 const route = useRoute();
 const post = JSON.parse(route.query.post); // 获取 postId 参数
@@ -184,15 +206,16 @@ const handleAI = () => {
 
         callModel('帮我总结一下下面的内容，用简短的语言，字数不超过400' + post.content, currentTimeMillis)
     }
+    showTip.value = !showTip.value
 }
+
+const showTip = ref(false)
 const appendLastMessageContent = (content) => {
     // let outcontent=content.replace(/\n/g, '<br>')
     aitext.value += content;
 
 };
 const callModel = async (message, userId) => {
-
-
     const res = await fetch(`https://www.oboard.eu.org/api/gpt?prompt=${message}&userId=${userId}`, {
         method: 'GET',
     });
@@ -202,20 +225,12 @@ const callModel = async (message, userId) => {
     while (true) {
         var { value, done } = await reader.read();
         if (done) {
-
-
-
             break
         }
 
         let outvalue = value?.replace('undefined', '') || '';
         appendLastMessageContent(outvalue);
     }
-
-    // 存
-
-    // 取
-
 }
 
 

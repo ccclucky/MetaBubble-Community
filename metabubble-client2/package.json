@@ -11,11 +11,13 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
   },
-  "devDependencies": {},
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "@element-plus/nuxt": "^1.0.6",
     "@nuxt/devtools": "latest",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.2",
+    "@pinia/nuxt": "^0.4.11",
+    "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.15",
     "babel-eslint": "^10.1.0",
     "daisyui": "^3.7.7",
@@ -27,14 +29,14 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
+    "fs": "0.0.1-security",
     "nuxt": "^3.7.3",
     "nuxt-icon": "^0.5.0",
-    "postcss": "^8.4.30",
-    "tailwindcss": "^3.3.3",
-    "@element-plus/icons-vue": "^2.1.0",
-    "@pinia/nuxt": "^0.4.11",
-    "@tailwindcss/typography": "^0.5.10",
+    "openai": "^4.33.0",
+    "path": "^0.12.7",
     "pinia": "^2.1.6",
-    "pinia-plugin-persistedstate": "^3.2.0"
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "postcss": "^8.4.30",
+    "tailwindcss": "^3.3.3"
   }
 }
