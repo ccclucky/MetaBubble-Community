@@ -25,14 +25,16 @@
         <!-- 点赞、收藏、评论信息 -->
         <div class="flex flex-1 flex-row px-20 pt-2 h-full">
             <div class="flex flex-1 justify-start items-center cursor-pointer">
-                <div @click="likeAndUnlike" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
+                <div @click="likeAndUnlike"
+                    class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
                     <Icon v-if="like" name="icon-park-solid:like" class="w-5 h-5" />
                     <Icon v-else name="icon-park-outline:like" class="w-5 h-5" />
                 </div>
                 <p class="px-2">{{ likeCount }}</p>
             </div>
             <div class="flex flex-1 justify-center items-center cursor-pointer">
-                <div @click="handleComment" class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
+                <div @click="handleComment"
+                    class="flex justify-center items-center w-7 h-7 rounded-full hover:bg-base-300">
                     <Icon v-if="false" name="majesticons:comment-2" class="w-5 h-5" />
                     <Icon v-else name="majesticons:comment-2-line" class="w-5 h-5" />
                 </div>
@@ -46,6 +48,21 @@
                 </div>
                 <p class="px-2">{{ collectCount }}</p>
             </div>
+
+
+            <div class="aiSummary">
+                <img class="icon-ai" src="/ai.png" />
+
+
+
+
+
+            </div>
+
+
+
+
+
         </div>
     </div>
 </template>
