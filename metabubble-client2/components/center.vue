@@ -18,15 +18,23 @@
           <option value="retro">Retro</option>
         </select> -->
 
-        <div class="dropdown dropdown-bottom pt-6 pr-6">
-          <button class="btn btn-neutral rounded-xl">更换主题</button>
-          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+        <details class="dropdown  pt-6 pr-6">
+          <!-- <button @click="changetheme()" class="btn btn-neutral rounded-xl">更换主题</button> -->
+          <summary @click="changetheme()" class="btn btn-neutral rounded-xl">更换主题</summary>
+
+          <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
             <li @click="selectTheme = 'base'; changetheme()"><a>Base</a></li>
             <li @click="selectTheme = 'dark'; changetheme()"><a>Dark</a></li>
             <li @click="selectTheme = 'retro'; changetheme()"><a>Retro</a></li>
-
           </ul>
-        </div>
+        </details>
+        <!-- <details class="dropdown">
+          <summary class="m-1 btn">open or close</summary>
+          <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+            <li><a>Item 1</a></li>
+            <li><a>Item 2</a></li>
+          </ul>
+        </details> -->
 
 
 
@@ -138,6 +146,7 @@ const cookie = useCookie('token')
 const selectTheme = ref('base')
 
 const changetheme = () => {
+  console.log(3)
   themeStore.changetheme(selectTheme)
 }
 </script>

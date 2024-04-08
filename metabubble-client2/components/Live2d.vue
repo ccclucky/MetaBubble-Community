@@ -12,29 +12,29 @@
 </template>
 
 <script setup>
-// //路径以.vue文件为起点
-import '../js/message'
-import '../js/live2d'
-import * as animate from '../js/animate'
-import { ref, onMounted } from 'vue';
+//路径以.vue文件为起点
+// import '../js/message'
+// import '../js/live2d'
+// import * as animate from '../js/animate'
+// import { ref, onMounted } from 'vue';
 
-const box = ref(null); // 创建一个 ref
-const ball = ref(null); // 创建另一个 ref
+// const box = ref(null); // 创建一个 ref
+// const ball = ref(null); // 创建另一个 ref
 
-onMounted(() => {
-	setTimeout(function () {
-		animate.disappear();
-	}, 1000);
-	//路径以index.html为起点
-	setTimeout(function () {
-		loadlive2d('live2d', "/live2d/model/rem/rem.json");
-	}, 2000);
-	animate.playAnimate(box, ball, 20);
-})
+// onMounted(() => {
+// 	setTimeout(function () {
+// 		animate.disappear();
+// 	}, 1000);
+// 	//路径以index.html为起点
+// 	setTimeout(function () {
+// 		loadlive2d('live2d', "/live2d/model/rem/rem.json");
+// 	}, 2000);
+// 	animate.playAnimate(box, ball, 20);
+// })
 
-function prompt() {
+// function prompt() {
 
-}
+// }
 </script>
 
 <style scoped>

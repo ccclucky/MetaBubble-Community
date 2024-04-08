@@ -46,7 +46,8 @@
                     <!-- <div onclick="handleShowTip" class="tooltip tooltip-right" :data-tip="aitext"> -->
                     <div :class="{ 'tooltip-open': showTip }" class="tooltip tooltip-right relative" :data-tip="aitext">
                         <img @click="handleAI" src="/AI.png" class="w-8 h-8 rounded-full relative cursor-pointer" />
-                        <button v-if="showTip" @click="main" class="w-8 h-8 rounded-full top-3px bg-white flex justify-center items-center">
+                        <button v-if="showTip" @click="main"
+                            class="w-8 h-8 rounded-full top-3px bg-white flex justify-center items-center">
                             <svg t="1712554624290" class="icon" viewBox="0 0 1024 1024" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" p-id="1576" width="16" height="16"
                                 data-spm-anchor-id="a313x.search_index.0.i4.95bf3a81TPXRb6">
